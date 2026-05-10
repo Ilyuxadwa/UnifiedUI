@@ -1,0 +1,30 @@
+{
+    "name": "Light",
+    "colors": {
+        "background": "#ffffff",
+        "additional_color": "#ffffff",
+        "button": "#ffffff",
+        "button_hover": "#ffffff",
+        "button_additional": "#ffffff",
+        "button_hover_additional": "#ffffff",
+        "entry": "#ffffff",
+        "ok_button": "#ffffff",
+        "cancel_button": "#ffffff",
+        "ok_button_hover": "#ffffff",
+        "cancel_button_hover": "#ffffff",
+        "primary": "#000000",
+        "secondary": "#ffffff",
+        "label_text": "#ffffff",
+        "outline": "#ffffff"
+    },
+
+    "font": {
+        "family": "Arial",
+        "size": 12
+    },
+
+    "others": {
+        "border_radius": 5,
+        "outline_width": 1
+    }
+}
