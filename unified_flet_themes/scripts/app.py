@@ -42,7 +42,7 @@ class App:
 
     def __init__(self):
         self.page: ft.Page = None
-        self.theme: Theme  = get_theme("Light")
+        self.theme: Theme = get_theme("Light")
         self.orientation: str = "landscape"
         self.title: str = ""
         self.size: str = "full"
@@ -68,13 +68,15 @@ class App:
             screen_w, screen_h = get_screen_resolution()
 
             if self.size == "full":
-                self.page.window.width  = screen_w
+                self.page.window.width = screen_w
                 self.page.window.height = screen_h
-                self.page.window.left   = 0
-                self.page.window.top    = 0
+                self.page.window.left = 0
+                self.page.window.top = 0
             else:
-                divisor = 1.5 if self.size == "1/2" else 2
-                self.page.window.width  = int(screen_w / divisor)
+                if self.size == "1/2": divisor = 1.5
+                else: divisor = 2.0
+                print (int(screen_w / divisor), int(screen_h / divisor))
+                self.page.window.width = int(screen_w / divisor)
                 self.page.window.height = int(screen_h / divisor)
                 await self.page.window.center()
 
@@ -83,25 +85,25 @@ class App:
         self.page.window.disabled = False
         self.page.update()
 
-    def top_bar(self) -> ft.Container:
+    def top_bar(self):
         s = self.scale
         return ft.Container(
-            bgcolor=self.theme.additional_color,
-            padding=ft.padding.symmetric(horizontal=int(16 * s), vertical=int(8 * s)),
+            bgcolor=self.theme.background,
+            #padding=ft.padding.all(int(16 * s)),
             content=ft.Row(
                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                 vertical_alignment=ft.CrossAxisAlignment.CENTER,
                 controls=[
                     ft.Text(
                         self.title,
-                        color=self.theme.primary,
+                        color=self.theme.secondary,
                         size=int((self.theme.font_size + 10) * s),
                         weight=ft.FontWeight.BOLD,
                         font_family=self.theme.font_family,
                     ),
                     ft.IconButton(
                         icon=ft.Icons.SETTINGS,
-                        icon_color=self.theme.primary,
+                        icon_color=self.theme.secondary,
                         icon_size=int(36 * s),
                         tooltip="Settings",
                         on_click=lambda e: self.open_settings(),
@@ -111,7 +113,7 @@ class App:
         )
     
     @property
-    def scale(self) -> float:
+    def scale(self):
         return {"full": 1.0, "1/2": 0.75, "1/4": 0.5}[self.size]
 
     def open_settings(self):
@@ -127,17 +129,17 @@ class App:
 
     #=====- Configuration -=====#
 
-    def set_theme(self, name: str) -> "App":
+    def set_theme(self, name: str):
         self.theme = get_theme(name)
         return self
 
-    def set_orientation(self, orientation: str) -> "App":
+    def set_orientation(self, orientation: str):
         if orientation not in ("landscape", "portrait"):
             raise ValueError(f"Invalid orientation '{orientation}'. Use 'landscape' or 'portrait'.")
         self.orientation = orientation
         return self
 
-    def set_size(self, size: str) -> "App":
+    def set_size(self, size: str):
         if size not in ("full", "1/2", "1/4"):
             raise ValueError(f"Invalid size '{size}'. Use 'full', '1/2' or '1/4'.")
         self.size = size

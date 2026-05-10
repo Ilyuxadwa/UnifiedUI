@@ -2,7 +2,7 @@
     "name": "Light",
     "colors": {
         "background": "#ffffff",
-        "additional_color": "#ffffff",
+        "additional_color": "#dbdbdb",
         "button": "#ffffff",
         "button_hover": "#ffffff",
         "button_additional": "#ffffff",
@@ -13,7 +13,7 @@
         "ok_button_hover": "#ffffff",
         "cancel_button_hover": "#ffffff",
         "primary": "#000000",
-        "secondary": "#ffffff",
+        "secondary": "#808080",
         "label_text": "#ffffff",
         "outline": "#ffffff"
     },
