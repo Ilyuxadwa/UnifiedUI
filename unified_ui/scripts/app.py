@@ -49,9 +49,9 @@ class App:
 
     def run(self, title: str = ""):
         self.title = title
-        ft.app(target=self._build)
+        ft.app(target=self.build)
 
-    async def _build(self, page: ft.Page):
+    async def build(self, page: ft.Page):
         self.page = page
         self.page.window.disabled = True
         self.page.update()
@@ -72,13 +72,18 @@ class App:
                 self.page.window.height = screen_h
                 self.page.window.left = 0
                 self.page.window.top = 0
+                self.page.window.title_bar_hidden = True
+                self.page.window.maximized = True
             else:
                 if self.size == "1/2": divisor = 1.5
                 else: divisor = 2.0
                 print (int(screen_w / divisor), int(screen_h / divisor))
                 self.page.window.width = int(screen_w / divisor)
                 self.page.window.height = int(screen_h / divisor)
+                self.page.update()
                 await self.page.window.center()
+            self.page.window.resizable = False
+            self.page.window.maximizable = False
 
         self.page.add(self.top_bar())
 
@@ -89,14 +94,14 @@ class App:
         s = self.scale
         return ft.Container(
             bgcolor=self.theme.background,
-            #padding=ft.padding.all(int(16 * s)),
+            padding=16 * s,
             content=ft.Row(
                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                 vertical_alignment=ft.CrossAxisAlignment.CENTER,
                 controls=[
                     ft.Text(
                         self.title,
-                        color=self.theme.secondary,
+                        color=self.theme.primary,
                         size=int((self.theme.font_size + 10) * s),
                         weight=ft.FontWeight.BOLD,
                         font_family=self.theme.font_family,
