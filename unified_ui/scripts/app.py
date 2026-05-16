@@ -4,8 +4,10 @@ from pathlib import Path
 
 import flet as ft
 
-sys.path.insert(0, str(Path(__file__).parent))
 from theme import get_theme, Theme
+import utils
+
+
 
 DESKTOP_PLATFORMS = {ft.PagePlatform.WINDOWS, ft.PagePlatform.MACOS, ft.PagePlatform.LINUX}
 MOBILE_PLATFORMS  = {ft.PagePlatform.ANDROID, ft.PagePlatform.IOS}
@@ -15,6 +17,15 @@ PORTRAIT  = [ft.DeviceOrientation.PORTRAIT_UP,    ft.DeviceOrientation.PORTRAIT_
 
 
 def get_screen_resolution() -> tuple[int, int]:
+    if platform.system() == "Windows":
+        try:
+            import ctypes, ctypes.wintypes
+            rect = ctypes.wintypes.RECT()
+            ctypes.windll.user32.SystemParametersInfoW(48, 0, ctypes.byref(rect), 0)  # SPI_GETWORKAREA = 48
+            return rect.right - rect.left, rect.bottom - rect.top
+        except Exception:
+            pass
+
     try:
         import tkinter
         root = tkinter.Tk()
@@ -25,15 +36,8 @@ def get_screen_resolution() -> tuple[int, int]:
     except Exception:
         pass
 
-    if platform.system() == "Windows":
-        try:
-            import ctypes
-            user32 = ctypes.windll.user32
-            return user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-        except Exception:
-            pass
-
     return 1920, 1080
+
 
 
 class App:
@@ -79,7 +83,7 @@ class App:
                 else: divisor = 2.0
                 print (int(screen_w / divisor), int(screen_h / divisor))
                 self.page.window.width = int(screen_w / divisor)
-                self.page.window.height = int(screen_h / divisor)
+                self.page.window.height = int(screen_h / divisor) + 40 
                 self.page.update()
                 await self.page.window.center()
             self.page.window.resizable = False
@@ -91,45 +95,61 @@ class App:
         self.page.update()
 
     def top_bar(self):
-        s = self.scale
-        return ft.Container(
-            bgcolor=self.theme.background,
-            padding=16 * s,
-            content=ft.Row(
-                alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                controls=[
-                    ft.Text(
-                        self.title,
-                        color=self.theme.primary,
-                        size=int((self.theme.font_size + 10) * s),
-                        weight=ft.FontWeight.BOLD,
-                        font_family=self.theme.font_family,
-                    ),
-                    ft.IconButton(
-                        icon=ft.Icons.SETTINGS,
-                        icon_color=self.theme.secondary,
-                        icon_size=int(36 * s),
-                        tooltip="Settings",
-                        on_click=lambda e: self.open_settings(),
-                    ),
-                ],
-            ),
+        s = utils.scale(self.size)
+
+        right_controls = [
+            ft.IconButton(
+                icon=ft.Icons.SETTINGS,
+                icon_color=self.theme.secondary,
+                icon_size=int(36 * s),
+                tooltip="Settings",
+                on_click=lambda e: self.open_settings()
+            )
+        ]
+
+        if self.size == "full" and self.page.platform in DESKTOP_PLATFORMS:
+            right_controls.append(
+                ft.IconButton(
+                    icon=ft.Icons.CLOSE_ROUNDED,
+                    icon_color=self.theme.cancel_button,
+                    icon_size=int(36 * s),
+                    tooltip="Close",
+                    on_click=lambda e: self.page.run_task(self.page.window.close)
+                )
+            )
+
+        return ft.Column(
+            spacing=0,
+            controls=[
+                ft.Container(
+                    bgcolor=self.theme.background,
+                    padding=16 * s,
+                    content=ft.Row(
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                        controls=[
+                            ft.Text(
+                                self.title,
+                                color=self.theme.primary,
+                                size=int((self.theme.font_size + 10) * s),
+                                weight=ft.FontWeight.BOLD,
+                                font_family=self.theme.font_family,
+                            ),
+                            ft.Row(spacing=0, controls=right_controls)
+                        ]
+                    )
+                ),
+                ft.Container(
+                    height=5 * s,
+                    border_radius=999,
+                    bgcolor=self.theme.additional_color,
+                    margin=20 * s
+                )
+            ]
         )
-    
-    @property
-    def scale(self):
-        return {"full": 1.0, "1/2": 0.75, "1/4": 0.5}[self.size]
 
     def open_settings(self):
-        dialog = ft.AlertDialog(
-            title=ft.Text("Settings"),
-            content=ft.Column([]),
-            actions=[
-                ft.TextButton("Cancel", on_click=lambda e: self.page.pop_dialog()),
-            ],
-        )
-        self.page.show_dialog(dialog)
+        pass
 
 
     #=====- Configuration -=====#

@@ -7,5 +7,5 @@ from app import App
  
 app = App()
 app.set_orientation("landscape")
-app.set_size("full")
+app.set_size("1/4")
 app.run("My App")
