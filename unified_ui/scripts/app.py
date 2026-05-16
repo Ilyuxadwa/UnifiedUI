@@ -149,7 +149,58 @@ class App:
         )
 
     def open_settings(self):
-        pass
+        s = utils.scale(self.size)
+
+        def close(e):
+            self.page.pop_dialog()
+
+        def apply(e):
+            #field = theme_dropdown.value
+
+            self.page.pop_dialog()
+
+        dialog = ft.AlertDialog(
+            bgcolor=self.theme.background,
+            title=ft.Text(
+                "Settings",
+                color=self.theme.primary,
+                weight=ft.FontWeight.BOLD,
+                font_family=self.theme.font_family,
+                size=int((self.theme.font_size + 12) * s),
+            ),
+            content=ft.Container(
+                width=self.page.window.width - 100 * s,
+                height=self.page.window.height - 100 * s,
+                content=ft.Column(
+                    tight=True,
+                    spacing=int(16 * s),
+                    controls=[
+
+                    ],
+                ),
+            ),
+            actions=[
+                ft.FilledButton(
+                    "Close",
+                    style=ft.ButtonStyle(
+                        bgcolor=self.theme.cancel_button,
+                        color=self.theme.background,
+                    ),
+                    on_click=close,
+                ),
+                ft.FilledButton(
+                    "Apply",
+                    style=ft.ButtonStyle(
+                        bgcolor=self.theme.ok_button,
+                        color=self.theme.background,
+                    ),
+                    on_click=apply,
+                ),
+            ],
+            actions_alignment=ft.MainAxisAlignment.END,
+        )
+
+        self.page.show_dialog(dialog)
 
 
     #=====- Configuration -=====#
@@ -169,3 +220,4 @@ class App:
             raise ValueError(f"Invalid size '{size}'. Use 'full', '1/2' or '1/4'.")
         self.size = size
         return self
+    
