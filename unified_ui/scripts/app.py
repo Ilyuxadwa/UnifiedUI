@@ -1,10 +1,8 @@
-import sys
 import platform
-from pathlib import Path
-
 import flet as ft
 
 from theme import get_theme, Theme
+from settings import Settings
 import utils
 
 
@@ -46,6 +44,7 @@ class App:
 
     def __init__(self):
         self.page: ft.Page = None
+        self.settings: Settings | None = None
         self.theme: Theme = get_theme("Light")
         self.orientation: str = "landscape"
         self.title: str = ""
@@ -151,12 +150,17 @@ class App:
     def open_settings(self):
         s = utils.scale(self.size)
 
+        if self.settings is None:
+            controls, refs = [], {}
+        else:
+            controls, refs = self.settings.build_controls(self.theme, s)
+
         def close(e):
             self.page.pop_dialog()
 
         def apply(e):
-            #field = theme_dropdown.value
-
+            if self.settings:
+                self.settings.apply(refs)
             self.page.pop_dialog()
 
         dialog = ft.AlertDialog(
@@ -174,26 +178,20 @@ class App:
                 content=ft.Column(
                     tight=True,
                     spacing=int(16 * s),
-                    controls=[
-
-                    ],
+                    controls=controls,
                 ),
             ),
             actions=[
                 ft.FilledButton(
                     "Close",
-                    style=ft.ButtonStyle(
-                        bgcolor=self.theme.cancel_button,
-                        color=self.theme.background,
-                    ),
+                    style=ft.ButtonStyle(bgcolor=self.theme.cancel_button,
+                                        color=self.theme.background),
                     on_click=close,
                 ),
                 ft.FilledButton(
                     "Apply",
-                    style=ft.ButtonStyle(
-                        bgcolor=self.theme.ok_button,
-                        color=self.theme.background,
-                    ),
+                    style=ft.ButtonStyle(bgcolor=self.theme.ok_button,
+                                        color=self.theme.background),
                     on_click=apply,
                 ),
             ],
@@ -202,12 +200,11 @@ class App:
 
         self.page.show_dialog(dialog)
 
-
-    #=====- Configuration -=====#
-
-    def set_theme(self, name: str):
+    def change_theme(self, name: str):
         self.theme = get_theme(name)
         return self
+
+    #=====- Configuration -=====#
 
     def set_orientation(self, orientation: str):
         if orientation not in ("landscape", "portrait"):
@@ -219,5 +216,9 @@ class App:
         if size not in ("full", "1/2", "1/4"):
             raise ValueError(f"Invalid size '{size}'. Use 'full', '1/2' or '1/4'.")
         self.size = size
+        return self
+    
+    def custom_settings(self, settings: "Settings"):
+        self.settings = settings
         return self
     
