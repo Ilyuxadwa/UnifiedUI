@@ -6,7 +6,7 @@ sys.path.append(os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "
 from app import App
 from settings import Settings
  
-settings = Settings().add_dropdown("theme", "Theme", "Light", ["Light", "Dark"])
+settings = Settings()
 app = App()
 app.set_orientation("landscape")
 app.set_size("1/2")

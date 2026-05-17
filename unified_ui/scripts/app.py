@@ -1,7 +1,9 @@
-import platform
 import flet as ft
 
-from theme import get_theme, Theme
+from typing import Any
+
+from theme import get_theme, available_themes, Theme
+from settings import Settings, SettingsField
 from settings import Settings
 import utils
 
@@ -14,29 +16,6 @@ LANDSCAPE = [ft.DeviceOrientation.LANDSCAPE_LEFT, ft.DeviceOrientation.LANDSCAPE
 PORTRAIT  = [ft.DeviceOrientation.PORTRAIT_UP,    ft.DeviceOrientation.PORTRAIT_DOWN]
 
 
-def get_screen_resolution() -> tuple[int, int]:
-    if platform.system() == "Windows":
-        try:
-            import ctypes, ctypes.wintypes
-            rect = ctypes.wintypes.RECT()
-            ctypes.windll.user32.SystemParametersInfoW(48, 0, ctypes.byref(rect), 0)  # SPI_GETWORKAREA = 48
-            return rect.right - rect.left, rect.bottom - rect.top
-        except Exception:
-            pass
-
-    try:
-        import tkinter
-        root = tkinter.Tk()
-        root.withdraw()
-        w, h = root.winfo_screenwidth(), root.winfo_screenheight()
-        root.destroy()
-        return w, h
-    except Exception:
-        pass
-
-    return 1920, 1080
-
-
 
 class App:
 
@@ -45,6 +24,7 @@ class App:
     def __init__(self):
         self.page: ft.Page = None
         self.settings: Settings | None = None
+        self.main_container: ft.Container = None
         self.theme: Theme = get_theme("Light")
         self.orientation: str = "landscape"
         self.title: str = ""
@@ -52,6 +32,16 @@ class App:
 
     def run(self, title: str = ""):
         self.title = title
+        if self.settings is None:
+            self.settings = Settings()
+        self.settings.fields.insert(0, SettingsField(
+            id="theme",
+            label="Theme",
+            type="dropdown",
+            value=self.theme.name,
+            options=available_themes(),
+            on_change=lambda val: self.change_theme(val),
+        ))
         ft.app(target=self.build)
 
     async def build(self, page: ft.Page):
@@ -68,7 +58,7 @@ class App:
             await self.page.set_allowed_device_orientations(orientations)
 
         elif self.page.platform in DESKTOP_PLATFORMS:
-            screen_w, screen_h = get_screen_resolution()
+            screen_w, screen_h = utils.get_screen_resolution()
 
             if self.size == "full":
                 self.page.window.width = screen_w
@@ -161,6 +151,7 @@ class App:
         def apply(e):
             if self.settings:
                 self.settings.apply(refs)
+                self.page.run_task(self.save_settings)
             self.page.pop_dialog()
 
         dialog = ft.AlertDialog(
@@ -200,9 +191,33 @@ class App:
 
         self.page.show_dialog(dialog)
 
+    async def save_settings(self):
+        if self.settings:
+            for f in self.settings.fields:
+                await self.save(f.id, f.value)
+
+    async def load_settings(self):
+        if self.settings:
+            for f in self.settings.fields:
+                val = await self.load(f.id)
+                if val is not None:
+                    f.value = val
+                    if f.on_change:
+                        f.on_change(val)
+
     def change_theme(self, name: str):
         self.theme = get_theme(name)
         return self
+    
+    async def save(self, key: str, value: Any):
+        await self.page.shared_preferences.set(f"{self.title}.{key}", value)
+
+    async def load(self, key: str, default: Any = None) -> Any:
+        val = await self.page.shared_preferences.get(f"{self.title}.{key}")
+        return val if val is not None else default
+
+    async def delete(self, key: str):
+        await self.page.shared_preferences.remove(f"{self.title}.{key}")
 
     #=====- Configuration -=====#
 

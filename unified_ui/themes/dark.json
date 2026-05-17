@@ -1,0 +1,30 @@
+{
+    "name": "Dark",
+    "colors": {
+        "background": "#2e2e2e",
+        "additional_color": "#404040",
+        "button": "#3c3c3c",
+        "button_hover": "#4c4c4c",
+        "button_additional": "#ffffff",
+        "button_hover_additional": "#ffffff",
+        "entry": "#ffffff",
+        "ok_button": "#3fff4f",
+        "cancel_button": "#ff5757",
+        "ok_button_hover": "#ffffff",
+        "cancel_button_hover": "#ffffff",
+        "primary": "#ffffff",
+        "secondary": "#808080",
+        "label_text": "#ffffff",
+        "outline": "#ffffff"
+    },
+
+    "font": {
+        "family": "Arial",
+        "size": 12
+    },
+
+    "others": {
+        "border_radius": 5,
+        "outline_width": 1
+    }
+}

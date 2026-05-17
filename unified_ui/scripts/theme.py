@@ -134,3 +134,6 @@ def get_theme(name: str = "Light") -> Theme:
  
 def get_all_themes() -> dict[str, Theme]:
     return load_all()
+
+def available_themes() -> list[str]:
+    return list(load_all().keys())
