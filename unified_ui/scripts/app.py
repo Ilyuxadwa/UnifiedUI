@@ -29,6 +29,7 @@ class App:
         self.orientation: str = "landscape"
         self.title: str = ""
         self.size: str = "full"
+        self.initialized: bool = False
 
     def run(self, title: str = ""):
         self.title = title
@@ -50,12 +51,16 @@ class App:
         self.page.update()
 
         self.page.title = self.title
-        self.page.bgcolor = self.theme.background
         self.page.padding = 0
 
+        await self.load_settings()
+
+        self.page.bgcolor = self.theme.background
+
         if self.page.platform in MOBILE_PLATFORMS:
-            orientations = LANDSCAPE if self.orientation == "landscape" else PORTRAIT
-            await self.page.set_allowed_device_orientations(orientations)
+            if not self._initialized:
+                orientations = LANDSCAPE if self.orientation == "landscape" else PORTRAIT
+                await self.page.set_allowed_device_orientations(orientations)
 
         elif self.page.platform in DESKTOP_PLATFORMS:
             screen_w, screen_h = utils.get_screen_resolution()
@@ -70,13 +75,17 @@ class App:
             else:
                 if self.size == "1/2": divisor = 1.5
                 else: divisor = 2.0
-                print (int(screen_w / divisor), int(screen_h / divisor))
+                self.page.window.title_bar_hidden = False
+                self.page.window.maximized = False
                 self.page.window.width = int(screen_w / divisor)
-                self.page.window.height = int(screen_h / divisor) + 40 
+                self.page.window.height = int(screen_h / divisor) + 40
                 self.page.update()
                 await self.page.window.center()
+
             self.page.window.resizable = False
             self.page.window.maximizable = False
+
+        self._initialized = True
 
         self.page.add(self.top_bar())
 
@@ -195,6 +204,9 @@ class App:
         if self.settings:
             for f in self.settings.fields:
                 await self.save(f.id, f.value)
+                self.page.controls.clear()
+                self.page.update()
+                await self.build(self.page)
 
     async def load_settings(self):
         if self.settings:
