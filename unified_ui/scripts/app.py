@@ -25,30 +25,52 @@ class App:
         self.page: ft.Page = None
         self.settings: Settings | None = None
         self.main_container: ft.Container = None
+        self.version: str = "0.99"
         self.theme: Theme = get_theme("Light")
         self.orientation: str = "landscape"
         self.title: str = ""
         self.size: str = "full"
+        self.fixed_size: bool = False
         self.initialized: bool = False
 
     def run(self, title: str = ""):
         self.title = title
-        if self.settings is None:
-            self.settings = Settings()
-        self.settings.fields.insert(0, SettingsField(
-            id="theme",
-            label="Theme",
-            type="dropdown",
-            value=self.theme.name,
-            options=available_themes(),
-            on_change=lambda val: self.change_theme(val),
-        ))
         ft.app(target=self.build)
 
     async def build(self, page: ft.Page):
         self.page = page
         self.page.window.disabled = True
         self.page.update()
+
+        if not self.initialized:
+
+            if self.settings is None:
+                self.settings = Settings()
+
+            system = self.settings.get_or_create_category("system", "System")
+            system.fields.insert(0, SettingsField(
+                id="theme",
+                label="Theme",
+                type="dropdown",
+                value=self.theme.name,
+                options=available_themes(),
+                on_change=lambda val: self.change_theme(val),
+            ))
+
+            if not self.fixed_size and self.page.platform in DESKTOP_PLATFORMS:
+                system.fields.insert(0, SettingsField(
+                    id="size",
+                    label="Size",
+                    type="dropdown",
+                    value=self.size,
+                    options=["full", "1/2", "1/4"],
+                    on_change=lambda val: self.set_size(val),
+                ))
+
+            self.settings.categories.remove(system)
+            self.settings.categories.insert(0, system)
+
+        
 
         self.page.title = self.title
         self.page.padding = 0
@@ -85,7 +107,7 @@ class App:
             self.page.window.resizable = False
             self.page.window.maximizable = False
 
-        self._initialized = True
+        self.initialized = True
 
         self.page.add(self.top_bar())
 
@@ -245,7 +267,15 @@ class App:
         self.size = size
         return self
     
+    def is_fixed_size(self, fixed: bool):
+        self.fixed_size = fixed
+        return self
+    
     def custom_settings(self, settings: "Settings"):
         self.settings = settings
+        return self
+    
+    def version(self, version: str):
+        self.version = version
         return self
     
