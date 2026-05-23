@@ -7,10 +7,13 @@ import flet as ft
 class SettingsField:
     id: str
     label: str
-    type: Literal["dropdown", "toggle", "text"]
+    type: Literal["dropdown", "toggle", "text", "slider", "directory"]
     value: Any
     options: list[str] = field(default_factory=list)
     on_change: Callable[[Any], None] = None
+    min_value: float = 0.0
+    max_value: float = 1.0
+    divisions: int | None = None
 
 
 @dataclass
@@ -29,6 +32,16 @@ class SettingsCategory:
 
     def add_text(self, id, label, value="", on_change=None):
         self.fields.append(SettingsField(id, label, "text", value, on_change=on_change))
+        return self
+
+    def add_slider(self, id, label, value=0.0, min_value=0.0, max_value=1.0, divisions=None, on_change=None):
+        f = SettingsField(id, label, "slider", value, on_change=on_change,
+                          min_value=min_value, max_value=max_value, divisions=divisions)
+        self.fields.append(f)
+        return self
+
+    def add_directory(self, id, label, value="", on_change=None):
+        self.fields.append(SettingsField(id, label, "directory", value, on_change=on_change))
         return self
 
 
@@ -64,6 +77,17 @@ class Settings:
     def add_text(self, category_id: str, id: str, label: str,
                  value: str = "", on_change: Callable[[str], None] = None):
         self.category(category_id).add_text(id, label, value, on_change)
+        return self
+
+    def add_slider(self, category_id: str, id: str, label: str,
+                   value: float = 0.0, min_value: float = 0.0, max_value: float = 1.0,
+                   divisions: int | None = None, on_change: Callable[[float], None] = None):
+        self.category(category_id).add_slider(id, label, value, min_value, max_value, divisions, on_change)
+        return self
+
+    def add_directory(self, category_id: str, id: str, label: str,
+                      value: str = "", on_change: Callable[[str], None] = None):
+        self.category(category_id).add_directory(id, label, value, on_change)
         return self
 
     def category(self, category_id: str) -> SettingsCategory:
@@ -161,6 +185,47 @@ class Settings:
             ctrl = ft.TextField(
                 label=f.label,
                 value=str(f.value) if f.value is not None else "",
+                color=theme.primary,
+                border_color=theme.secondary,
+                focused_border_color=theme.primary,
+                label_style=ft.TextStyle(color=theme.secondary),
+                text_style=ft.TextStyle(color=theme.primary),
+            )
+
+        elif f.type == "slider":
+            slider = ft.Slider(
+                value=float(f.value),
+                min=f.min_value,
+                max=f.max_value,
+                divisions=f.divisions,
+                active_color=theme.primary,
+                inactive_color=theme.secondary,
+                thumb_color=theme.primary,
+                label="{value}",
+            )
+            ctrl = ft.Container(
+                border=ft.border.all(1, theme.secondary),
+                border_radius=8,
+                padding=ft.padding.symmetric(horizontal=12, vertical=8),
+                content=ft.Column(
+                    spacing=0,
+                    controls=[
+                        ft.Text(f.label, color=theme.primary,
+                                font_family=theme.font_family,
+                                size=int(theme.font_size * s)),
+                        slider,
+                    ],
+                ),
+            )
+            refs[f.id] = (f, slider)
+            return ctrl
+
+        elif f.type == "directory":
+            ctrl = ft.TextField(
+                label=f.label,
+                value=str(f.value) if f.value is not None else "",
+                hint_text="Enter folder path...",
+                prefix_icon=ft.Icons.FOLDER_OUTLINED,
                 color=theme.primary,
                 border_color=theme.secondary,
                 focused_border_color=theme.primary,
