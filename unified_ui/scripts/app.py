@@ -2,10 +2,10 @@ import flet as ft
 
 from typing import Any
 
-from theme import get_theme, available_themes, Theme
-from settings import Settings, SettingsField
-from settings import Settings
-import utils
+from .theme import get_theme, available_themes, Theme
+from .settings import Settings, SettingsField
+from .settings import Settings
+from . import utils
 
 
 
