@@ -24,7 +24,7 @@ class App:
     def __init__(self):
         self.page: ft.Page = None
         self.settings: Settings | None = None
-        self.main_container: ft.Container = None
+        self.body: ft.Column = ft.Column(expand=True, spacing=0)
         self.version: str = "0.99"
         self.theme: Theme = get_theme("Light")
         self.orientation: str = "landscape"
@@ -32,6 +32,7 @@ class App:
         self.size: str = "full"
         self.fixed_size: bool = False
         self.initialized: bool = False
+        self.icon: str | None = None
 
     def run(self, title: str = ""):
         self.title = title
@@ -54,7 +55,7 @@ class App:
                 type="dropdown",
                 value=self.theme.name,
                 options=available_themes(),
-                on_change=lambda val: self.change_theme(val),
+                on_change=lambda val: self.change_theme(val)
             ))
 
             if not self.fixed_size and self.page.platform in DESKTOP_PLATFORMS:
@@ -64,7 +65,7 @@ class App:
                     type="dropdown",
                     value=self.size,
                     options=["full", "1/2", "1/4"],
-                    on_change=lambda val: self.set_size(val),
+                    on_change=lambda val: self.set_size(val)
                 ))
 
             self.settings.categories.remove(system)
@@ -74,6 +75,9 @@ class App:
 
         self.page.title = self.title
         self.page.padding = 0
+
+        if self.icon:
+            self.page.window.icon = self.icon
 
         await self.load_settings()
 
@@ -109,12 +113,12 @@ class App:
 
         self.initialized = True
 
-        self.page.add(self.top_bar())
+        self.app_ui()
 
         self.page.window.disabled = False
         self.page.update()
 
-    def top_bar(self):
+    def app_ui(self):
         s = utils.scale(self.size)
 
         right_controls = [
@@ -138,7 +142,8 @@ class App:
                 )
             )
 
-        return ft.Column(
+        return self.page.add(ft.Column(
+            expand=True,
             spacing=0,
             controls=[
                 ft.Container(
@@ -164,9 +169,20 @@ class App:
                     border_radius=999,
                     bgcolor=self.theme.additional_color,
                     margin=20 * s
+                ),
+                self.body,
+                ft.Container(
+                    padding=ft.Padding(left=0, top=0, right=16 * s, bottom=12 * s),
+                    alignment=ft.Alignment(1, 1),
+                    content=ft.Text(
+                        f"v{self.version}",
+                        color=self.theme.additional_color,
+                        size=int(24 * s),
+                        font_family=self.theme.font_family,
+                    )
                 )
             ]
-        )
+        ))
 
     def open_settings(self):
         s = utils.scale(self.size)
@@ -192,7 +208,7 @@ class App:
                 color=self.theme.primary,
                 weight=ft.FontWeight.BOLD,
                 font_family=self.theme.font_family,
-                size=int((self.theme.font_size + 12) * s),
+                size=int((self.theme.font_size + 12) * s)
             ),
             content=ft.Container(
                 width=self.page.window.width - 100 * s,
@@ -200,8 +216,8 @@ class App:
                 content=ft.Column(
                     tight=True,
                     spacing=int(16 * s),
-                    controls=controls,
-                ),
+                    controls=controls
+                )
             ),
             actions=[
                 ft.FilledButton(
@@ -215,7 +231,7 @@ class App:
                     style=ft.ButtonStyle(bgcolor=self.theme.ok_button,
                                         color=self.theme.background),
                     on_click=apply,
-                ),
+                )
             ],
             actions_alignment=ft.MainAxisAlignment.END,
         )
@@ -226,9 +242,9 @@ class App:
         if self.settings:
             for f in self.settings.fields:
                 await self.save(f.id, f.value)
-                self.page.controls.clear()
-                self.page.update()
-                await self.build(self.page)
+            self.page.controls.clear()
+            self.page.update()
+            await self.build(self.page)
 
     async def load_settings(self):
         if self.settings:
@@ -253,7 +269,12 @@ class App:
     async def delete(self, key: str):
         await self.page.shared_preferences.remove(f"{self.title}.{key}")
 
+
     #=====- Configuration -=====#
+
+    def set_icon(self, path: str):
+        self.icon = path
+        return self
 
     def set_orientation(self, orientation: str):
         if orientation not in ("landscape", "portrait"):
@@ -275,7 +296,16 @@ class App:
         self.settings = settings
         return self
     
-    def version(self, version: str):
+    def set_version(self, version: str):
         self.version = version
         return self
     
+
+    #=====- UI Building -=====#
+
+    def add_element(self, *controls: ft.Control):
+        for control in controls:
+            self.body.controls.append(control)
+        if self.page:
+            self.page.update()
+        return self
