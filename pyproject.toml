@@ -9,7 +9,7 @@ description = "A unified UI framework built on Flet"
 readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.10"
-dependencies = ["flet>=0.80.0"]
+dependencies = ["flet>=0.25.0"]
 
 [tool.setuptools]
 package-dir = {"unified_ui" = "unified_ui/scripts", "unified_ui.themes" = "unified_ui/themes"}
@@ -17,6 +17,3 @@ packages = ["unified_ui", "unified_ui.themes"]
 
 [tool.setuptools.package-data]
 "unified_ui.themes" = ["*.json"]
-
-[tool.setuptools.package-data]
-unified_ui = ["../themes/*.json"]
