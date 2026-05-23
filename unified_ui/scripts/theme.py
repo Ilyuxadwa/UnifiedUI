@@ -2,9 +2,10 @@ import json
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
- 
- 
-THEMES_DIR = Path(__file__).parent.parent / "themes"
+from importlib.resources import files
+
+
+THEMES_DIR = files("unified_ui.themes")
  
  
 @dataclass
