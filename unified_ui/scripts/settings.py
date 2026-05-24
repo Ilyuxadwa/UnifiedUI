@@ -165,9 +165,14 @@ class Settings:
                 inactive_thumb_color=theme.secondary,
             )
             ctrl = ft.Container(
-                border=ft.border.all(1, theme.secondary),
+                border=ft.Border(
+                    top=ft.BorderSide(1, theme.secondary),
+                    bottom=ft.BorderSide(1, theme.secondary),
+                    left=ft.BorderSide(1, theme.secondary),
+                    right=ft.BorderSide(1, theme.secondary)
+                ),
                 border_radius=8,
-                padding=ft.padding.symmetric(horizontal=12, vertical=8),
+                padding=12 * s,
                 content=ft.Row(
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     controls=[
@@ -204,9 +209,14 @@ class Settings:
                 label="{value}",
             )
             ctrl = ft.Container(
-                border=ft.border.all(1, theme.secondary),
+                border=ft.Border(
+                    top=ft.BorderSide(1, theme.secondary),
+                    bottom=ft.BorderSide(1, theme.secondary),
+                    left=ft.BorderSide(1, theme.secondary),
+                    right=ft.BorderSide(1, theme.secondary)
+                ),
                 border_radius=8,
-                padding=ft.padding.symmetric(horizontal=12, vertical=8),
+                padding=12 * s,
                 content=ft.Column(
                     spacing=0,
                     controls=[

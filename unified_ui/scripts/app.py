@@ -216,6 +216,7 @@ class App:
                 content=ft.Column(
                     tight=True,
                     spacing=int(16 * s),
+                    scroll=ft.ScrollMode.AUTO,
                     controls=controls
                 )
             ),
