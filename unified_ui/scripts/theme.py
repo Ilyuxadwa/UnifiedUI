@@ -13,15 +13,11 @@ class ThemeColors:
     background: str              = "#ffffff"
     additional_color: str        = "#ffffff"
     button: str                  = "#ffffff"
-    button_hover: str            = "#ffffff"
     button_additional: str       = "#ffffff"
-    button_hover_additional: str = "#ffffff"
     entry: str                   = "#ffffff"
     ok_button: str               = "#ffffff"
-    ok_button_hover: str         = "#ffffff"
     cancel_button: str           = "#ffffff"
-    cancel_button_hover: str     = "#ffffff"
-    primary: str                 = "#000000"
+    primary: str                 = "#ffffff"
     secondary: str               = "#ffffff"
     label_text: str              = "#ffffff"
     outline: str                 = "#ffffff"
@@ -47,7 +43,6 @@ class ThemeFont:
  
 @dataclass
 class ThemeOthers:
-    border_radius: int = 5
     outline_width: int = 1
  
     @classmethod
@@ -84,21 +79,16 @@ class Theme:
         self.background: str              = data.colors.background
         self.additional_color: str        = data.colors.additional_color
         self.button: str                  = data.colors.button
-        self.button_hover: str            = data.colors.button_hover
         self.button_additional: str       = data.colors.button_additional
-        self.button_hover_additional: str = data.colors.button_hover_additional
         self.entry: str                   = data.colors.entry
         self.ok_button: str               = data.colors.ok_button
-        self.ok_button_hover: str         = data.colors.ok_button_hover
         self.cancel_button: str           = data.colors.cancel_button
-        self.cancel_button_hover: str     = data.colors.cancel_button_hover
         self.primary: str                 = data.colors.primary
         self.secondary: str               = data.colors.secondary
         self.label_text: str              = data.colors.label_text
         self.outline: str                 = data.colors.outline
         self.font_family: str             = data.font.family
         self.font_size: int               = data.font.size
-        self.border_radius: int           = data.others.border_radius
         self.outline_width: int           = data.others.outline_width
  
     def __repr__(self) -> str:

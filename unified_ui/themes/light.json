@@ -4,14 +4,10 @@
         "background": "#ffffff",
         "additional_color": "#dbdbdb",
         "button": "#ffffff",
-        "button_hover": "#ffffff",
         "button_additional": "#ffffff",
-        "button_hover_additional": "#ffffff",
         "entry": "#ffffff",
         "ok_button": "#3fff4f",
         "cancel_button": "#ff5757",
-        "ok_button_hover": "#ffffff",
-        "cancel_button_hover": "#ffffff",
         "primary": "#000000",
         "secondary": "#808080",
         "label_text": "#ffffff",
@@ -24,7 +20,6 @@
     },
 
     "others": {
-        "border_radius": 5,
         "outline_width": 1
     }
 }

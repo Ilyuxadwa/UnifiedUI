@@ -310,3 +310,4 @@ class App:
         if self.page:
             self.page.update()
         return self
+    
