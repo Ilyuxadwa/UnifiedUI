@@ -1,7 +1,7 @@
 import flet as ft
-import utils
+from . import utils
 
-def adaptive_size(dim: str, size: int):
+def adapt_size(dim: str, size: int):
     w, h = utils.get_screen_resolution()
     if dim == "w":
         return int((size / 100) * w)
@@ -10,7 +10,7 @@ def adaptive_size(dim: str, size: int):
     else:
         raise ValueError("Invalid dimension. Use 'w' for width or 'h' for height.")
 
-def adaptive_position(dim: str, position: int):
+def adapt_position(dim: str, position: int):
     w, h = utils.get_screen_resolution()
     if dim == "x":
         return int((position / 100) * w)
@@ -35,7 +35,7 @@ def main_button_style(app, **kwargs) -> ft.ButtonStyle:
 def additional_button_style(app, **kwargs) -> ft.ButtonStyle:
     s = utils.scale(app.size)
     return ft.ButtonStyle(
-        bgcolor=app.theme.button_additional_color,
+        bgcolor=app.theme.button_additional,
         color=app.theme.secondary,
         text_style=ft.TextStyle(
             font_family=app.theme.font_family,

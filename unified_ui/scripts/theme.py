@@ -12,7 +12,7 @@ THEMES_DIR = files("unified_ui.themes")
 class ThemeColors:
     background: str              = "#ffffff"
     additional_color: str        = "#ffffff"
-    button: str                  = "#ffffff"
+    button: str                  = "#000000"
     button_additional: str       = "#ffffff"
     entry: str                   = "#ffffff"
     ok_button: str               = "#ffffff"
@@ -48,7 +48,6 @@ class ThemeOthers:
     @classmethod
     def from_dict(cls, data: dict) -> "ThemeOthers":
         return cls(
-            border_radius=int(data.get("border_radius", 5)),
             outline_width=int(data.get("outline_width", 1)),
         )
  

@@ -33,6 +33,7 @@ class App:
         self.fixed_size: bool = False
         self.initialized: bool = False
         self.icon: str | None = None
+        self.ui_builder = None
 
     def run(self, title: str = ""):
         self.title = title
@@ -120,6 +121,10 @@ class App:
 
     def app_ui(self):
         s = utils.scale(self.size)
+
+        if self.ui_builder:
+            self.body = ft.Column(expand=True, spacing=0)
+            self.ui_builder(self)
 
         right_controls = [
             ft.IconButton(
@@ -309,5 +314,9 @@ class App:
             self.body.controls.append(control)
         if self.page:
             self.page.update()
+        return self
+    
+    def set_ui(self, builder):
+        self.ui_builder = builder
         return self
     

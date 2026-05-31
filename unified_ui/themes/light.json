@@ -3,15 +3,15 @@
     "colors": {
         "background": "#ffffff",
         "additional_color": "#dbdbdb",
-        "button": "#ffffff",
-        "button_additional": "#ffffff",
-        "entry": "#ffffff",
+        "button": "#d4d4d4",
+        "button_additional": "#bdbdbd",
+        "entry": "#f2f2f2",
         "ok_button": "#3fff4f",
         "cancel_button": "#ff5757",
         "primary": "#000000",
         "secondary": "#808080",
         "label_text": "#ffffff",
-        "outline": "#ffffff"
+        "outline": "#1f1f1f"
     },
 
     "font": {
