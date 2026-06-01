@@ -18,7 +18,65 @@ def adapt_position(dim: str, position: int):
         return int((position / 100) * h)
     else:
         raise ValueError("Invalid dimension. Use 'x' for x-coordinate or 'y' for y-coordinate.")
+
+
+
+def align_start(app, *controls, **kwargs) -> ft.Column:
+    """Controls aligned to the top."""
+    return ft.Column(
+        controls=list(controls),
+        alignment=ft.MainAxisAlignment.START,
+        horizontal_alignment=ft.CrossAxisAlignment.START,
+        **kwargs,
+    )
+ 
+def align_center(app, *controls, **kwargs) -> ft.Column:
+    """Controls centered vertically."""
+    return ft.Column(
+        controls=list(controls),
+        alignment=ft.MainAxisAlignment.CENTER,
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        **kwargs,
+    )
+ 
+def align_end(app, *controls, **kwargs) -> ft.Column:
+    """Controls aligned to the bottom."""
+    return ft.Column(
+        controls=list(controls),
+        alignment=ft.MainAxisAlignment.END,
+        horizontal_alignment=ft.CrossAxisAlignment.END,
+        **kwargs,
+    )
+ 
+def align_space_between(app, *controls, **kwargs) -> ft.Column:
+    """Controls spread vertically with space between."""
+    return ft.Column(
+        controls=list(controls),
+        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+        horizontal_alignment=ft.CrossAxisAlignment.START,
+        **kwargs,
+    )
+ 
+def align_space_around(app, *controls, **kwargs) -> ft.Column:
+    """Controls spread vertically with space around."""
+    return ft.Column(
+        controls=list(controls),
+        alignment=ft.MainAxisAlignment.SPACE_AROUND,
+        horizontal_alignment=ft.CrossAxisAlignment.START,
+        **kwargs,
+    )
+ 
+def align_space_evenly(app, *controls, **kwargs) -> ft.Column:
+    """Controls spread vertically with equal spacing."""
+    return ft.Column(
+        controls=list(controls),
+        alignment=ft.MainAxisAlignment.SPACE_EVENLY,
+        horizontal_alignment=ft.CrossAxisAlignment.START,
+        **kwargs,
+    )
     
+
+
 def main_button_style(app, **kwargs) -> ft.ButtonStyle:
     s = utils.scale(app.size)
     return ft.ButtonStyle(

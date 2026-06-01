@@ -6,6 +6,7 @@ from .theme import get_theme, available_themes, Theme
 from .settings import Settings, SettingsField
 from .settings import Settings
 from . import utils
+from . import tools
 
 
 
@@ -123,7 +124,7 @@ class App:
         s = utils.scale(self.size)
 
         if self.ui_builder:
-            self.body = ft.Column(expand=True, spacing=0)
+            self.body = ft.Column(expand=True, spacing=0, padding=ft.Padding(left=16 * s, right=16 * s, top=8 * s, bottom=8 * s))
             self.ui_builder(self)
 
         right_controls = [
@@ -316,6 +317,15 @@ class App:
             self.page.update()
         return self
     
+    def alignment(self, align_type, *controls, **kwargs):
+        match align_type:
+            case "start": return tools.align_start(self, *controls, **kwargs)
+            case "center": return tools.align_center(self, *controls, **kwargs)
+            case "end": return tools.align_end(self, *controls, **kwargs)
+            case "space_between": return tools.align_space_between(self, *controls, **kwargs)
+            case "space_around": return tools.align_space_around(self, *controls, **kwargs)
+            case "space_evenly": return tools.align_space_evenly(self, *controls, **kwargs)
+
     def set_ui(self, builder):
         self.ui_builder = builder
         return self
