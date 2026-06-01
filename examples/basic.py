@@ -17,7 +17,7 @@ example_settings_category.add_slider("slider", "Example Slider", 0.5, min_value=
 example_settings_category.add_directory("directory", "Example Directory", on_change=lambda value: print(f"Directory changed to: {value}"))
 
 def ui(app):
-    app.add_element(ft.Button("Main Button", width = tools.adapt_size("w", 15), height = tools.adapt_size("h", 5), style=tools.main_button_style(app, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda _: print("Button clicked!")))
+    app.add_element(app.alignment("center", ft.Button("Main Button", width = tools.adapt_size("w", 15), height = tools.adapt_size("h", 5), style=tools.main_button_style(app, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda _: print("Button clicked!")), expand=True))
     app.add_element(ft.Button("Additional Button", width = tools.adapt_size("w", 10), height = tools.adapt_size("h", 5), style=tools.additional_button_style(app, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda _: print("Button clicked!")))
     app.add_element(ft.Text("Primary Text", style=tools.primary_text_style(app)))
     app.add_element(ft.Text("Secondary Text", style=tools.secondary_text_style(app)))

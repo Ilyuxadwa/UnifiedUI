@@ -124,7 +124,7 @@ class App:
         s = utils.scale(self.size)
 
         if self.ui_builder:
-            self.body = ft.Column(expand=True, spacing=0, padding=ft.Padding(left=16 * s, right=16 * s, top=8 * s, bottom=8 * s))
+            self.body = ft.Column(expand=True, spacing=0)
             self.ui_builder(self)
 
         right_controls = [
@@ -176,7 +176,10 @@ class App:
                     bgcolor=self.theme.additional_color,
                     margin=20 * s
                 ),
-                self.body,
+                ft.Container(
+                    padding=ft.Padding(left=16 * s, right=16 * s, top=12 * s, bottom=12 * s),
+                    content=self.body
+                ),
                 ft.Container(
                     padding=ft.Padding(left=0, top=0, right=16 * s, bottom=12 * s),
                     alignment=ft.Alignment(1, 1),
