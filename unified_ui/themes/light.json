@@ -3,8 +3,8 @@
     "colors": {
         "background": "#ffffff",
         "additional_color": "#dbdbdb",
-        "button": "#d4d4d4",
-        "button_additional": "#bdbdbd",
+        "button": "#bdbdbd",
+        "button_additional": "#e8e8e8",
         "entry": "#f2f2f2",
         "ok_button": "#3fff4f",
         "cancel_button": "#ff5757",
@@ -15,8 +15,7 @@
     },
 
     "font": {
-        "family": "Arial",
-        "size": 12
+        "family": "Arial"
     },
 
     "others": {

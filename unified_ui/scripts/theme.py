@@ -12,7 +12,7 @@ THEMES_DIR = files("unified_ui.themes")
 class ThemeColors:
     background: str              = "#ffffff"
     additional_color: str        = "#ffffff"
-    button: str                  = "#000000"
+    button: str                  = "#ffffff"
     button_additional: str       = "#ffffff"
     entry: str                   = "#ffffff"
     ok_button: str               = "#ffffff"
@@ -31,13 +31,11 @@ class ThemeColors:
 @dataclass
 class ThemeFont:
     family: str = "Arial"
-    size: int = 12
  
     @classmethod
     def from_dict(cls, data: dict) -> "ThemeFont":
         return cls(
-            family=data.get("family", "Arial"),
-            size=int(data.get("size", 12)),
+            family=data.get("family", "Arial")
         )
  
  
@@ -87,7 +85,6 @@ class Theme:
         self.label_text: str              = data.colors.label_text
         self.outline: str                 = data.colors.outline
         self.font_family: str             = data.font.family
-        self.font_size: int               = data.font.size
         self.outline_width: int           = data.others.outline_width
  
     def __repr__(self) -> str:
