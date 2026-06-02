@@ -17,10 +17,24 @@ example_settings_category.add_slider("slider", "Example Slider", 0.5, min_value=
 example_settings_category.add_directory("directory", "Example Directory", on_change=lambda value: print(f"Directory changed to: {value}"))
 
 def ui(app):
-    app.add_element(app.alignment("center", ft.Button("Main Button", width = tools.adapt_size("w", 15), height = tools.adapt_size("h", 5), style=tools.main_button_style(app, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda _: print("Button clicked!")), expand=True))
-    app.add_element(ft.Button("Additional Button", width = tools.adapt_size("w", 10), height = tools.adapt_size("h", 5), style=tools.additional_button_style(app, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda _: print("Button clicked!")))
-    app.add_element(ft.Text("Primary Text", style=tools.primary_text_style(app)))
-    app.add_element(ft.Text("Secondary Text", style=tools.secondary_text_style(app)))
+    app.add_element(app.alignment("rcenter", 
+                        ft.Button("Main Button", width = tools.adapt_dimensions(app, "w", 16), height = tools.adapt_dimensions(app, "h", 8), style=tools.main_button_style(app, 12, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda _: print("Button clicked!")),
+                        ft.Button("Additional Button", width = tools.adapt_dimensions(app, "w", 14), height = tools.adapt_dimensions(app, "h", 10), style=tools.additional_button_style(app, 12, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda _: print("Button clicked!")),
+                    expand=True))
+    app.add_element(app.alignment("rspace_around",
+                        ft.Text("Primary Text", style=tools.primary_text_style(app, 18)),
+                        ft.Text("Secondary Text", style=tools.secondary_text_style(app, 18)),
+                    expand=True))
+    app.add_element(app.alignment("rspace_evenly",
+                        tools.entry(app, 12, label="Entry 1", hint_text="Text", width=tools.adapt_dimensions(app, "w", 32), height=tools.adapt_dimensions(app, "h", 16)),
+                        tools.dropdown(app, 12, label="Dropdown 1", options=[ft.DropdownOption("Option 1", "option1"), ft.DropdownOption("Option 2", "option2"), ft.DropdownOption("Option 3", "option3")], width=tools.adapt_dimensions(app, "w", 16), height=tools.adapt_dimensions(app, "h", 16)),
+                        tools.slider(app),
+                    expand=True))
+    app.add_element(app.alignment("rcenter",
+                        tools.radio(app, 12, label="Radio 1", width=tools.adapt_dimensions(app, "w", 16), height=tools.adapt_dimensions(app, "h", 16)),
+                        tools.checkbox(app, 12, label="Checkbox 1", width=tools.adapt_dimensions(app, "w", 16), height=tools.adapt_dimensions(app, "h", 16)),
+                        tools.switch(app, 12, label="Switch 1", width=tools.adapt_dimensions(app, "w", 16), height=tools.adapt_dimensions(app, "h", 16)),
+                    expand=True))
     
 app = App()
 app.set_orientation("landscape")
