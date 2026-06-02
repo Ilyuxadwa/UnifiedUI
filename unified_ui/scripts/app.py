@@ -25,7 +25,7 @@ class App:
     def __init__(self):
         self.page: ft.Page = None
         self.settings: Settings | None = None
-        self.body: ft.Column = ft.Column(expand=True, spacing=0)
+        self.body: ft.Column = ft.Column()
         self.version: str = "0.99"
         self.theme: Theme = get_theme("Light")
         self.orientation: str = "landscape"
@@ -124,7 +124,7 @@ class App:
         s = utils.scale(self.size)
 
         if self.ui_builder:
-            self.body = ft.Column(expand=True, spacing=0)
+            self.body = ft.Column()
             self.ui_builder(self)
 
         right_controls = [
@@ -162,7 +162,7 @@ class App:
                             ft.Text(
                                 self.title,
                                 color=self.theme.primary,
-                                size=int((self.theme.font_size + 10) * s),
+                                size=int(22 * s),
                                 weight=ft.FontWeight.BOLD,
                                 font_family=self.theme.font_family,
                             ),
@@ -176,9 +176,9 @@ class App:
                     bgcolor=self.theme.additional_color,
                     margin=20 * s
                 ),
-                ft.Container(
+                ft.Column(expand=True, spacing=0, controls = ft.Container(
                     padding=ft.Padding(left=16 * s, right=16 * s, top=12 * s, bottom=12 * s),
-                    content=self.body
+                    content=self.body)
                 ),
                 ft.Container(
                     padding=ft.Padding(left=0, top=0, right=16 * s, bottom=12 * s),
@@ -217,7 +217,7 @@ class App:
                 color=self.theme.primary,
                 weight=ft.FontWeight.BOLD,
                 font_family=self.theme.font_family,
-                size=int((self.theme.font_size + 12) * s)
+                size=int(24 * s)
             ),
             content=ft.Container(
                 width=self.page.window.width - 100 * s,
@@ -322,14 +322,27 @@ class App:
     
     def alignment(self, align_type, *controls, **kwargs):
         match align_type:
-            case "start": return tools.align_start(self, *controls, **kwargs)
-            case "center": return tools.align_center(self, *controls, **kwargs)
-            case "end": return tools.align_end(self, *controls, **kwargs)
-            case "space_between": return tools.align_space_between(self, *controls, **kwargs)
-            case "space_around": return tools.align_space_around(self, *controls, **kwargs)
-            case "space_evenly": return tools.align_space_evenly(self, *controls, **kwargs)
+            case "cstart": return tools.column_align_start(self, *controls, **kwargs)
+            case "ccenter": return tools.column_align_center(self, *controls, **kwargs)
+            case "cend": return tools.column_align_end(self, *controls, **kwargs)
+            case "cspace_between": return tools.column_align_space_between(self, *controls, **kwargs)
+            case "cspace_around": return tools.column_align_space_around(self, *controls, **kwargs)
+            case "cspace_evenly": return tools.column_align_space_evenly(self, *controls, **kwargs)
+            case "rstart": return tools.row_align_start(self, *controls, **kwargs)
+            case "rcenter": return tools.row_align_center(self, *controls, **kwargs)
+            case "rend": return tools.row_align_end(self, *controls, **kwargs)
+            case "rspace_between": return tools.row_align_space_between(self, *controls, **kwargs)
+            case "rspace_around": return tools.row_align_space_around(self, *controls, **kwargs)
+            case "rspace_evenly": return tools.row_align_space_evenly(self, *controls, **kwargs)
 
     def set_ui(self, builder):
         self.ui_builder = builder
         return self
+    
+    def get_work_area(self) -> tuple[int, int]:
+        s = self.scale = utils.scale(self.size)
+        if self.page:
+            return self.page.window.width - int(32*s), self.page.window.height - int(24*s)
+        else:
+            return utils.get_screen_resolution()
     
