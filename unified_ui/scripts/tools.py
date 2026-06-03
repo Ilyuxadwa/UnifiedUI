@@ -130,7 +130,7 @@ def main_button_style(app, font_size, **kwargs) -> ft.ButtonStyle:
         color=app.theme.primary,
         text_style=ft.TextStyle(
             font_family=app.theme.font_family,
-            size=font_size
+            size=font_size * s
         ),
         shape=ft.StadiumBorder(),
         **kwargs
@@ -143,7 +143,7 @@ def additional_button_style(app, font_size, **kwargs) -> ft.ButtonStyle:
         color=app.theme.secondary,
         text_style=ft.TextStyle(
             font_family=app.theme.font_family,
-            size=font_size
+            size=font_size * s
         ),
         shape=ft.StadiumBorder(),
         **kwargs
@@ -156,7 +156,7 @@ def ok_button_style(app, font_size, **kwargs) -> ft.ButtonStyle:
         color=app.theme.background,
         text_style=ft.TextStyle(
             font_family=app.theme.font_family,
-            size=font_size
+            size=font_size * s
         ),
         shape=ft.StadiumBorder(),
         **kwargs
@@ -169,7 +169,7 @@ def cancel_button_style(app, font_size, **kwargs) -> ft.ButtonStyle:
         color=app.theme.background,
         text_style=ft.TextStyle(
             font_family=app.theme.font_family,
-            size=font_size
+            size=font_size * s
         ),
         shape=ft.StadiumBorder(),
         **kwargs
@@ -180,7 +180,7 @@ def label_style(app, font_size, **kwargs) -> ft.TextStyle:
     return ft.TextStyle(
         color=app.theme.label_text,
         font_family=app.theme.font_family,
-        size=font_size
+        size=font_size * s
         **kwargs
     )
  
@@ -189,7 +189,7 @@ def primary_text_style(app, font_size, **kwargs) -> ft.TextStyle:
     return ft.TextStyle(
         color=app.theme.primary,
         font_family=app.theme.font_family,
-        size=font_size,
+        size=font_size * s,
         **kwargs
     )
  
@@ -198,7 +198,7 @@ def secondary_text_style(app, font_size, **kwargs) -> ft.TextStyle:
     return ft.TextStyle(
         color=app.theme.secondary,
         font_family=app.theme.font_family,
-        size=font_size,
+        size=font_size * s,
         **kwargs
     )
 
@@ -215,12 +215,12 @@ def entry(app, font_size, **kwargs) -> ft.TextField:
         label_style=ft.TextStyle(
             color=app.theme.secondary,
             font_family=app.theme.font_family,
-            size=font_size
+            size=font_size * s
         ),
         text_style=ft.TextStyle(
             color=app.theme.primary,
             font_family=app.theme.font_family,
-            size=font_size
+            size=font_size * s
         ),
         **kwargs
     )
@@ -228,24 +228,25 @@ def entry(app, font_size, **kwargs) -> ft.TextField:
 def dropdown(app, font_size, **kwargs) -> ft.Dropdown:
     s = utils.scale(app.size)
     return ft.Dropdown(
-        bgcolor=app.theme.entry,
-        border_color=app.theme.outline,
-        focused_border_color=app.theme.primary,
-        border_radius=8,
-        border_width=app.theme.outline_width,
+        bgcolor=app.theme.background,
         color=app.theme.primary,
+        fill_color=app.theme.entry,
+        filled=True,
         text_style=ft.TextStyle(
             color=app.theme.primary,
             font_family=app.theme.font_family,
-            size=font_size
+            size=font_size * s
         ),
         label_style=ft.TextStyle(
             color=app.theme.secondary,
             font_family=app.theme.font_family,
-            size=font_size
+            size=font_size * s
         ),
         **kwargs
     )
+
+def doption(label: str, key: str = None) -> ft.dropdown.Option:
+    return ft.dropdown.Option(key=key or label, text=label)
 
 def slider(app, **kwargs) -> ft.Slider:
     return ft.Slider(
@@ -267,7 +268,7 @@ def checkbox(app, font_size, **kwargs) -> ft.Checkbox:
         label_style=ft.TextStyle(
             color=app.theme.primary,
             font_family=app.theme.font_family,
-            size=font_size
+            size=font_size * s
         ),
         **kwargs
     )
@@ -279,8 +280,14 @@ def radio(app, font_size, **kwargs) -> ft.Radio:
         label_style=ft.TextStyle(
             color=app.theme.primary,
             font_family=app.theme.font_family,
-            size=font_size
+            size=font_size * s
         ),
+        **kwargs
+    )
+
+def radio_group(app, *radios, **kwargs) -> ft.RadioGroup:
+    return ft.RadioGroup(
+        content=ft.Column(controls=list(radios)),
         **kwargs
     )
 
@@ -291,10 +298,10 @@ def switch(app, font_size, **kwargs) -> ft.Switch:
         active_track_color=app.theme.button_additional,
         inactive_thumb_color=app.theme.secondary,
         inactive_track_color=app.theme.additional_color,
-        label_style=ft.TextStyle(
+        label_text_style=ft.TextStyle(
             color=app.theme.primary,
             font_family=app.theme.font_family,
-            size=font_size
+            size=font_size * s
         ),
         **kwargs
     )
@@ -321,33 +328,110 @@ def dialog(app, font_size, **kwargs) -> ft.AlertDialog:
         title_text_style=ft.TextStyle(
             color=app.theme.primary,
             font_family=app.theme.font_family,
-            size=font_size + 12 * s,
+            size=font_size * s + 12 * s,
             weight=ft.FontWeight.BOLD
         ),
         **kwargs
     )
 
-def data_table(app, font_size, **kwargs) -> ft.DataTable:
+def data_cell(app, content: ft.Control, **kwargs) -> ft.DataCell:
+    return ft.DataCell(content=content, **kwargs)
+ 
+def data_column(app, font_size, label: str, **kwargs) -> ft.DataColumn:
     s = utils.scale(app.size)
-    return ft.DataTable(
-        bgcolor=app.theme.additional_color,
-        border=ft.Border.all(
-            width=app.theme.outline_width,
-            color=app.theme.outline,
-        ),
-        border_radius=8,
-        divider_thickness=app.theme.outline_width,
-        heading_row_color=app.theme.secondary,
-        heading_text_style=ft.TextStyle(
+    return ft.DataColumn(
+        label=ft.Text(
+            label,
             color=app.theme.primary,
             font_family=app.theme.font_family,
-            size=font_size,
+            size=font_size * s,
             weight=ft.FontWeight.BOLD,
-        ),
-        data_text_style=ft.TextStyle(
-            color=app.theme.primary,
-            font_family=app.theme.font_family,
-            size=font_size
         ),
         **kwargs
     )
+ 
+ 
+class Table:
+ 
+    def __init__(self, app, font_size: int):
+        self.app = app
+        self.font_size = font_size
+        self.columns = []
+        self.rows = []
+        self.extra = {}
+        self.table: ft.DataTable | None = None
+ 
+    def cols(self, *labels: str):
+        s = utils.scale(self.app.size)
+        for label in labels:
+            self.columns.append(ft.DataColumn(
+                label=ft.Text(
+                    label,
+                    color=self.app.theme.primary,
+                    font_family=self.app.theme.font_family,
+                    size=self.font_size * s,
+                    weight=ft.FontWeight.BOLD,
+                )
+            ))
+        return self
+ 
+    def add_row(self, *values):
+        s = utils.scale(self.app.size)
+        index = len(self.rows)
+        color = self.app.theme.additional_color if index % 2 == 0 else self.app.theme.entry
+        self.rows.append(ft.DataRow(
+            color=color,
+            cells=[
+                ft.DataCell(ft.Text(
+                    str(v),
+                    color=self.app.theme.primary,
+                    font_family=self.app.theme.font_family,
+                    size=self.font_size * s,
+                ))
+                for v in values
+            ]
+        ))
+        return self
+ 
+    def size(self, w: int = None, h: int = None):
+        if w is not None:
+            self.extra["width"] = adapt_dimensions(self.app, "w", w)
+        if h is not None:
+            self.extra["height"] = adapt_dimensions(self.app, "h", h)
+        return self
+ 
+    def build(self, **kwargs) -> ft.DataTable:
+        s = utils.scale(self.app.size)
+        self.table = ft.DataTable(
+            columns=self.columns,
+            rows=self.rows,
+            bgcolor=self.app.theme.additional_color,
+            divider_thickness=self.app.theme.outline_width,
+            heading_row_color=self.app.theme.button,
+            heading_text_style=ft.TextStyle(
+                color=self.app.theme.primary,
+                font_family=self.app.theme.font_family,
+                size=self.font_size * s,
+                weight=ft.FontWeight.BOLD,
+            ),
+            data_text_style=ft.TextStyle(
+                color=self.app.theme.primary,
+                font_family=self.app.theme.font_family,
+                size=self.font_size * s,
+            ),
+            **self.extra,
+            **kwargs,
+        )
+        return self.table
+ 
+    def clear(self):
+        self.rows.clear()
+        if self.table is not None:
+            self.table.rows.clear()
+        return self
+ 
+    def update(self):
+        if self.table is not None:
+            self.table.rows = self.rows
+            self.table.update()
+        return self

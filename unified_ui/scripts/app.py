@@ -25,7 +25,7 @@ class App:
     def __init__(self):
         self.page: ft.Page = None
         self.settings: Settings | None = None
-        self.body: ft.Column = ft.Column()
+        self.body: ft.ListView = ft.ListView(expand=True, spacing=0, padding=ft.Padding(left=16, right=16, top=12, bottom=12))
         self.version: str = "0.99"
         self.theme: Theme = get_theme("Light")
         self.orientation: str = "landscape"
@@ -35,6 +35,8 @@ class App:
         self.initialized: bool = False
         self.icon: str | None = None
         self.ui_builder = None
+        self.pages: dict = {}
+        self.current_page: str | None = None
 
     def run(self, title: str = ""):
         self.title = title
@@ -124,7 +126,7 @@ class App:
         s = utils.scale(self.size)
 
         if self.ui_builder:
-            self.body = ft.Column()
+            self.body = ft.ListView(expand=True, spacing=0, padding=ft.Padding(left=16, right=16, top=12, bottom=12))
             self.ui_builder(self)
 
         right_controls = [
@@ -176,10 +178,7 @@ class App:
                     bgcolor=self.theme.additional_color,
                     margin=20 * s
                 ),
-                ft.Column(expand=True, spacing=0, controls = ft.Container(
-                    padding=ft.Padding(left=16 * s, right=16 * s, top=12 * s, bottom=12 * s),
-                    content=self.body)
-                ),
+                self.body,
                 ft.Container(
                     padding=ft.Padding(left=0, top=0, right=16 * s, bottom=12 * s),
                     alignment=ft.Alignment(1, 1),
@@ -319,7 +318,30 @@ class App:
         if self.page:
             self.page.update()
         return self
-    
+
+    def update(self):
+        self.body.controls.clear()
+        if self.ui_builder:
+            self.ui_builder(self)
+        if self.page:
+            self.page.update()
+        return self
+
+    def add_page(self, name: str, builder):
+        self.pages[name] = builder
+        if self.current_page is None:
+            self.current_page = name
+            self.ui_builder = builder
+        return self
+
+    def navigate(self, name: str):
+        if name not in self.pages:
+            raise ValueError(f"Page '{name}' not found. Register it with add_page() first.")
+        self.current_page = name
+        self.ui_builder = self.pages[name]
+        self.update()
+        return self
+
     def alignment(self, align_type, *controls, **kwargs):
         match align_type:
             case "cstart": return tools.column_align_start(self, *controls, **kwargs)
@@ -345,4 +367,3 @@ class App:
             return self.page.window.width - int(32*s), self.page.window.height - int(24*s)
         else:
             return utils.get_screen_resolution()
-    
