@@ -128,7 +128,7 @@ class Settings:
                             ft.Text(
                                 cat.label.upper(),
                                 color=theme.secondary,
-                                size=int((theme.font_size + 2) * s),
+                                size=int(14 * s),
                                 weight=ft.FontWeight.BOLD,
                                 font_family=theme.font_family
                             ),
@@ -162,14 +162,16 @@ class Settings:
             switch = ft.Switch(
                 value=f.value,
                 active_color=theme.primary,
+                active_track_color=theme.button_additional,
                 inactive_thumb_color=theme.secondary,
+                inactive_track_color=theme.additional_color
             )
             ctrl = ft.Container(
                 border=ft.Border(
-                    top=ft.BorderSide(1, theme.secondary),
-                    bottom=ft.BorderSide(1, theme.secondary),
-                    left=ft.BorderSide(1, theme.secondary),
-                    right=ft.BorderSide(1, theme.secondary)
+                    top=ft.BorderSide(theme.outline_width, theme.outline),
+                    bottom=ft.BorderSide(theme.outline_width, theme.outline),
+                    left=ft.BorderSide(theme.outline_width, theme.outline),
+                    right=ft.BorderSide(theme.outline_width, theme.outline)
                 ),
                 border_radius=8,
                 padding=12 * s,
@@ -178,7 +180,7 @@ class Settings:
                     controls=[
                         ft.Text(f.label, color=theme.primary,
                                 font_family=theme.font_family,
-                                size=int(theme.font_size * s)),
+                                size=int(12 * s)),
                         switch,
                     ],
                 ),
@@ -204,16 +206,16 @@ class Settings:
                 max=f.max_value,
                 divisions=f.divisions,
                 active_color=theme.primary,
-                inactive_color=theme.secondary,
-                thumb_color=theme.primary,
+                inactive_color=theme.button_additional,
+                thumb_color=theme.secondary,
                 label="{value}",
             )
             ctrl = ft.Container(
                 border=ft.Border(
-                    top=ft.BorderSide(1, theme.secondary),
-                    bottom=ft.BorderSide(1, theme.secondary),
-                    left=ft.BorderSide(1, theme.secondary),
-                    right=ft.BorderSide(1, theme.secondary)
+                    top=ft.BorderSide(theme.outline_width, theme.outline),
+                    bottom=ft.BorderSide(theme.outline_width, theme.outline),
+                    left=ft.BorderSide(theme.outline_width, theme.outline),
+                    right=ft.BorderSide(theme.outline_width, theme.outline)
                 ),
                 border_radius=8,
                 padding=12 * s,
@@ -222,7 +224,7 @@ class Settings:
                     controls=[
                         ft.Text(f.label, color=theme.primary,
                                 font_family=theme.font_family,
-                                size=int(theme.font_size * s)),
+                                size=int(12 * s)),
                         slider,
                     ],
                 ),
