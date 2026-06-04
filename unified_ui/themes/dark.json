@@ -3,9 +3,9 @@
     "colors": {
         "background": "#2e2e2e",
         "additional_color": "#404040",
-        "button": "#7a7a7a",
+        "button": "#525252",
         "button_additional": "#a8a8a8",
-        "entry": "#b5b5b5",
+        "entry": "#4a4a4a",
         "ok_button": "#1ebd2b",
         "cancel_button": "#d42a2a",
         "primary": "#ffffff",
