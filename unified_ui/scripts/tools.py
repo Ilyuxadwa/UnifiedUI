@@ -375,10 +375,11 @@ class Table:
             ))
         return self
  
-    def add_row(self, *values):
+    def add_row(self, *values, color: str = None):
         s = utils.scale(self.app.size)
-        index = len(self.rows)
-        color = self.app.theme.additional_color if index % 2 == 0 else self.app.theme.entry
+        if color is None:
+            index = len(self.rows)
+            color = self.app.theme.additional_color if index % 2 == 0 else self.app.theme.entry
         self.rows.append(ft.DataRow(
             color=color,
             cells=[

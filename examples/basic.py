@@ -47,7 +47,7 @@ def ui(app):
                     expand=True))
     app.add_element(app.alignment("rcenter",
                         table.build(),
-                    expand=True))
+                    expand=True, height=tools.adapt_dimensions(app, "h", 50)))
     
     
 app = App()
