@@ -360,6 +360,8 @@ class Table:
         self.rows = []
         self.extra = {}
         self.table: ft.DataTable | None = None
+        self._heading_height: int | None = None
+        self._row_height: int | None = None
  
     def cols(self, *labels: str):
         s = utils.scale(self.app.size)
@@ -394,6 +396,14 @@ class Table:
         ))
         return self
  
+    def heading_height(self, height: int):
+        self._heading_height = height
+        return self
+ 
+    def row_height(self, height: int):
+        self._row_height = height
+        return self
+ 
     def size(self, w: int = None, h: int = None):
         if w is not None:
             self.extra["width"] = adapt_dimensions(self.app, "w", w)
@@ -401,8 +411,16 @@ class Table:
             self.extra["height"] = adapt_dimensions(self.app, "h", h)
         return self
  
-    def build(self, **kwargs) -> ft.DataTable:
+    def build(self, **kwargs) -> ft.Control:
         s = utils.scale(self.app.size)
+ 
+        table_kwargs = {}
+        if self._heading_height is not None:
+            table_kwargs["heading_row_height"] = self._heading_height
+        if self._row_height is not None:
+            table_kwargs["data_row_min_height"] = self._row_height
+            table_kwargs["data_row_max_height"] = self._row_height
+ 
         self.table = ft.DataTable(
             columns=self.columns,
             rows=self.rows,
@@ -420,10 +438,26 @@ class Table:
                 font_family=self.app.theme.font_family,
                 size=self.font_size * s,
             ),
-            **self.extra,
+            **table_kwargs,
             **kwargs,
         )
-        return self.table
+ 
+        if "height" in self.extra:
+            return ft.Container(
+                width=self.extra.get("width"),
+                height=self.extra["height"],
+                bgcolor=self.app.theme.additional_color,
+                content=ft.ListView(
+                    controls=[self.table],
+                    expand=True,
+                )
+            )
+ 
+        return ft.Container(
+            width=self.extra.get("width"),
+            bgcolor=self.app.theme.additional_color,
+            content=self.table,
+        )
  
     def clear(self):
         self.rows.clear()
