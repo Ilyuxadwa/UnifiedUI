@@ -128,7 +128,7 @@ class App:
             self.on_ready(self)
 
         if self.on_ready_async:
-            self.page.run_task(self.on_ready_async(), self)
+            self.page.run_task(self.on_ready_async, self)
 
     def app_ui(self):
         s = utils.scale(self.size)
