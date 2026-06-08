@@ -49,11 +49,14 @@ def ui(app):
                         table.build(),
                     expand=True, height=tools.adapt_dimensions(app, "h", 50)))
     
-    
+def main(app):
+    print("hi!")
+
 app = App()
 app.set_orientation("landscape")
 app.set_size("1/2")
 app.custom_settings(settings)
 app.set_version("1.0.0")
 app.set_ui(ui)
+app.set_next(main)
 app.run("My App")

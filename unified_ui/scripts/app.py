@@ -37,6 +37,8 @@ class App:
         self.ui_builder = None
         self.pages: dict = {}
         self.current_page: str | None = None
+        self.on_ready = None
+        self.on_ready_async = None
 
     def run(self, title: str = ""):
         self.title = title
@@ -121,6 +123,12 @@ class App:
 
         self.page.window.disabled = False
         self.page.update()
+
+        if self.on_ready:
+            self.on_ready(self)
+
+        if self.on_ready_async:
+            self.page.run_task(self.on_ready_async(), self)
 
     def app_ui(self):
         s = utils.scale(self.size)
@@ -307,6 +315,14 @@ class App:
     
     def set_version(self, version: str):
         self.version = version
+        return self
+    
+    def set_next(self, callback):
+        self.on_ready = callback
+        return self
+    
+    def set_async_next(self, callback):
+        self.on_ready_async = callback
         return self
     
 
