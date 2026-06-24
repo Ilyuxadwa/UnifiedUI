@@ -19,7 +19,7 @@ example_settings_category.add_directory("directory", "Example Directory", on_cha
 def ui(app):
 
     table = tools.Table(app, 12).cols("Column 1", "Column 2", "Column 3").add_row("Some 1", "Information 1", "Here 1").add_row("Some 2", "Information 2", "Here 2")
-    table.size(w=80, h=16)
+    table.size(w=80, h=50)
     
     app.add_element(app.alignment("rcenter", 
                         ft.Button("Main Button", width = tools.adapt_dimensions(app, "w", 16), height = tools.adapt_dimensions(app, "h", 8), style=tools.main_button_style(app, 12, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda _: print("Button clicked!")),
@@ -33,7 +33,7 @@ def ui(app):
                     expand=True))
     app.add_element(app.alignment("rspace_evenly",
                         tools.entry(app, 12, label="Entry 1", hint_text="Text", width=tools.adapt_dimensions(app, "w", 32), height=tools.adapt_dimensions(app, "h", 16)),
-                        tools.dropdown(app, 12, label="Dropdown 1", options=[ft.DropdownOption("Option 1", "option1"), ft.DropdownOption("Option 2", "option2"), ft.DropdownOption("Option 3", "option3")], width=tools.adapt_dimensions(app, "w", 16), height=tools.adapt_dimensions(app, "h", 16)),
+                        tools.dropdown(app, 12, label="Dropdown 1", options=[tools.doption(app, "Option 1"), tools.doption(app, "Option 2"), tools.doption(app, "Option 3")], width=tools.adapt_dimensions(app, "w", 16), height=tools.adapt_dimensions(app, "h", 16)),
                         tools.slider(app),
                     expand=True))
     app.add_element(app.alignment("rspace_evenly",

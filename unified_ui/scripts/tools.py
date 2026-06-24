@@ -245,8 +245,8 @@ def dropdown(app, font_size, **kwargs) -> ft.Dropdown:
         **kwargs
     )
 
-def doption(label: str, key: str = None) -> ft.dropdown.Option:
-    return ft.dropdown.Option(key=key or label, text=label)
+def doption(app, label: str, key: str = None) -> ft.DropdownOption:
+    return ft.DropdownOption(key=key or label, content=ft.Text(label, color=app.theme.secondary))
 
 def slider(app, **kwargs) -> ft.Slider:
     return ft.Slider(
@@ -424,9 +424,11 @@ class Table:
         self.table = ft.DataTable(
             columns=self.columns,
             rows=self.rows,
-            bgcolor=self.app.theme.additional_color,
+            bgcolor=self.app.theme.background,
+            border_radius=8,
+            border=ft.Border.all(2, self.app.theme.outline),
             divider_thickness=self.app.theme.outline_width,
-            heading_row_color=self.app.theme.button,
+            heading_row_color=self.app.theme.background,
             heading_text_style=ft.TextStyle(
                 color=self.app.theme.primary,
                 font_family=self.app.theme.font_family,
@@ -446,7 +448,7 @@ class Table:
             return ft.Container(
                 width=self.extra.get("width"),
                 height=self.extra["height"],
-                bgcolor=self.app.theme.additional_color,
+                bgcolor=self.app.theme.background,
                 content=ft.ListView(
                     controls=[self.table],
                     expand=True,
@@ -455,7 +457,7 @@ class Table:
  
         return ft.Container(
             width=self.extra.get("width"),
-            bgcolor=self.app.theme.additional_color,
+            bgcolor=self.app.theme.background,
             content=self.table,
         )
  
