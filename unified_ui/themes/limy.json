@@ -1,0 +1,24 @@
+{
+    "name": "Limy",
+    "colors": {
+        "background": "#91ffa3",
+        "additional_color": "#52d668",
+        "button": "#6aff41",
+        "button_additional": "#e7ff7e",
+        "entry": "#68eb77",
+        "ok_button": "#0486ff",
+        "cancel_button": "#ffbe1a",
+        "primary": "#1f5e19",
+        "secondary": "#4bb94c",
+        "label_text": "#0b2408",
+        "outline": "#0e370b"
+    },
+
+    "font": {
+        "family": "Arial"
+    },
+
+    "others": {
+        "outline_width": 1
+    }
+}
