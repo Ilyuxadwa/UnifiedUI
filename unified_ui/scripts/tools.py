@@ -222,6 +222,7 @@ def entry(app, font_size, **kwargs) -> ft.TextField:
             font_family=app.theme.font_family,
             size=font_size * s
         ),
+        hint_style=secondary_text_style(app, font_size-int(4*s)),
         **kwargs
     )
 
@@ -298,6 +299,10 @@ def switch(app, font_size, **kwargs) -> ft.Switch:
         active_track_color=app.theme.button_additional,
         inactive_thumb_color=app.theme.secondary,
         inactive_track_color=app.theme.additional_color,
+        overlay_color={ft.ControlState.DEFAULT: app.theme.additional_color},
+        track_outline_color={ft.ControlState.DEFAULT: app.theme.additional_color, ft.ControlState.SELECTED: app.theme.button_additional},
+        track_outline_width={ft.ControlState.DEFAULT: 0, ft.ControlState.SELECTED: 0, ft.ControlState.HOVERED: 0},
+        splash_radius=2,
         label_text_style=ft.TextStyle(
             color=app.theme.primary,
             font_family=app.theme.font_family,
