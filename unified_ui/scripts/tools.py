@@ -232,6 +232,7 @@ def dropdown(app, font_size, **kwargs) -> ft.Dropdown:
         bgcolor=app.theme.background,
         color=app.theme.primary,
         fill_color=app.theme.entry,
+        border_color=app.theme.outline,
         filled=True,
         text_style=ft.TextStyle(
             color=app.theme.primary,
@@ -260,7 +261,7 @@ def slider(app, **kwargs) -> ft.Slider:
 def checkbox(app, font_size, **kwargs) -> ft.Checkbox:
     s = utils.scale(app.size)
     return ft.Checkbox(
-        fill_color=app.theme.button_additional,
+        fill_color=app.theme.entry,
         check_color=app.theme.primary,
         border_side=ft.BorderSide(
             width=app.theme.outline_width,

@@ -4,14 +4,14 @@
         "background": "#0b203c",
         "additional_color": "#143055",
         "button": "#3756a6",
-        "button_additional": "#2a3f73",
+        "button_additional": "#213977",
         "entry": "#273370",
-        "ok_button": "#1a215b",
-        "cancel_button": "#090f4e",
-        "primary": "#ffffff",
-        "secondary": "#576595",
+        "ok_button": "#2f8295",
+        "cancel_button": "#70358e",
+        "primary": "#c9e0ff",
+        "secondary": "#6777ae",
         "label_text": "#0b2408",
-        "outline": "#284360"
+        "outline": "#011021"
     },
 
     "font": {
