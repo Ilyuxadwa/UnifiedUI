@@ -1,17 +1,17 @@
 {
     "name": "Limy",
     "colors": {
-        "background": "#91ffa3",
-        "additional_color": "#52d668",
-        "button": "#6aff41",
-        "button_additional": "#e7ff7e",
-        "entry": "#68eb77",
-        "ok_button": "#56aafa",
-        "cancel_button": "#ff723f",
-        "primary": "#1f5e19",
+        "background": "#c1ffcb",
+        "additional_color": "#7fda8e",
+        "button": "#75fa64",
+        "button_additional": "#90fb7d",
+        "entry": "#b0ffba",
+        "ok_button": "#7dc0ff",
+        "cancel_button": "#ff685d",
+        "primary": "#64af5d",
         "secondary": "#4bb94c",
-        "label_text": "#0b2408",
-        "outline": "#0e370b"
+        "label_text": "#3c6c37",
+        "outline": "#34962d"
     },
 
     "font": {
