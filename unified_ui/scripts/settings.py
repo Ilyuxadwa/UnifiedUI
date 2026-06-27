@@ -168,10 +168,10 @@ class Settings:
             )
             ctrl = ft.Container(
                 border=ft.Border(
-                    top=ft.BorderSide(theme.outline_width, theme.outline),
-                    bottom=ft.BorderSide(theme.outline_width, theme.outline),
-                    left=ft.BorderSide(theme.outline_width, theme.outline),
-                    right=ft.BorderSide(theme.outline_width, theme.outline)
+                    top=ft.BorderSide(theme.outline_width+1, theme.secondary),
+                    bottom=ft.BorderSide(theme.outline_width+1, theme.secondary),
+                    left=ft.BorderSide(theme.outline_width+1, theme.secondary),
+                    right=ft.BorderSide(theme.outline_width+1, theme.secondary)
                 ),
                 border_radius=8,
                 padding=12 * s,
@@ -212,10 +212,10 @@ class Settings:
             )
             ctrl = ft.Container(
                 border=ft.Border(
-                    top=ft.BorderSide(theme.outline_width, theme.outline),
-                    bottom=ft.BorderSide(theme.outline_width, theme.outline),
-                    left=ft.BorderSide(theme.outline_width, theme.outline),
-                    right=ft.BorderSide(theme.outline_width, theme.outline)
+                    top=ft.BorderSide(theme.outline_width+1, theme.secondary),
+                    bottom=ft.BorderSide(theme.outline_width+1, theme.secondary),
+                    left=ft.BorderSide(theme.outline_width+1, theme.secondary),
+                    right=ft.BorderSide(theme.outline_width+1, theme.secondary)
                 ),
                 border_radius=8,
                 padding=12 * s,

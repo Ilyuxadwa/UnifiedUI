@@ -207,7 +207,7 @@ def entry(app, font_size, **kwargs) -> ft.TextField:
     return ft.TextField(
         bgcolor=app.theme.entry,
         border_color=app.theme.outline,
-        focused_border_color=app.theme.primary,
+        focused_border_color=app.theme.outline,
         border_radius=8,
         border_width=app.theme.outline_width,
         color=app.theme.primary,

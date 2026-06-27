@@ -22,8 +22,8 @@ def ui(app):
     table.size(w=80, h=50)
     
     app.add_element(app.alignment("rcenter", 
-                        ft.Button("Main Button", width = tools.adapt_dimensions(app, "w", 16), height = tools.adapt_dimensions(app, "h", 8), style=tools.main_button_style(app, 12, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda _: print("Button clicked!")),
-                        ft.Button("Additional Button", width = tools.adapt_dimensions(app, "w", 14), height = tools.adapt_dimensions(app, "h", 10), style=tools.additional_button_style(app, 12, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda _: print("Button clicked!")),
+                        ft.Button("Main Button", width = tools.adapt_dimensions(app, "w", 14), height = tools.adapt_dimensions(app, "h", 10), style=tools.main_button_style(app, 12, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda _: print("Button clicked!")),
+                        ft.Button("Additional Button", width = tools.adapt_dimensions(app, "w", 16), height = tools.adapt_dimensions(app, "h", 8), style=tools.additional_button_style(app, 12, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda _: print("Button clicked!")),
                         ft.Button("Okay", width = tools.adapt_dimensions(app, "w", 12), height = tools.adapt_dimensions(app, "h", 6), style=tools.ok_button_style(app, 12, padding = 5)),
                         ft.Button("Cancel", width = tools.adapt_dimensions(app, "w", 12), height = tools.adapt_dimensions(app, "h", 6), style=tools.cancel_button_style(app, 12, padding = 5)),
                     expand=True))
