@@ -132,7 +132,6 @@ def main_button_style(app, font_size, **kwargs) -> ft.ButtonStyle:
             font_family=app.theme.font_family,
             size=font_size * s
         ),
-        shape=ft.StadiumBorder(),
         **kwargs
     )
  
@@ -145,7 +144,6 @@ def additional_button_style(app, font_size, **kwargs) -> ft.ButtonStyle:
             font_family=app.theme.font_family,
             size=font_size * s
         ),
-        shape=ft.StadiumBorder(),
         **kwargs
     )
  
@@ -158,7 +156,6 @@ def ok_button_style(app, font_size, **kwargs) -> ft.ButtonStyle:
             font_family=app.theme.font_family,
             size=font_size * s
         ),
-        shape=ft.StadiumBorder(),
         **kwargs
     )
  
@@ -171,7 +168,6 @@ def cancel_button_style(app, font_size, **kwargs) -> ft.ButtonStyle:
             font_family=app.theme.font_family,
             size=font_size * s
         ),
-        shape=ft.StadiumBorder(),
         **kwargs
     )
  
