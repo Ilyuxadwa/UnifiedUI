@@ -232,6 +232,7 @@ def dropdown(app, font_size, **kwargs) -> ft.Dropdown:
         bgcolor=app.theme.background,
         color=app.theme.primary,
         fill_color=app.theme.entry,
+        border_width=app.theme.outline_width,
         border_color=app.theme.outline,
         filled=True,
         text_style=ft.TextStyle(

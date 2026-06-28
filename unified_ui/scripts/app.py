@@ -206,7 +206,7 @@ class App:
         if self.settings is None:
             controls, refs = [], {}
         else:
-            controls, refs = self.settings.build_controls(self.theme, s)
+            controls, refs = self.settings.build_controls(self)
 
         def close(e):
             self.page.pop_dialog()

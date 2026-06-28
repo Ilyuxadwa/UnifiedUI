@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 from typing import Any, Callable, Literal
 import flet as ft
+from . import tools
+from . import utils
 
 
 @dataclass
@@ -111,7 +113,8 @@ class Settings:
 
 
 
-    def build_controls(self, theme, s: float) -> tuple[list[ft.Control], dict]:
+    def build_controls(self, app) -> tuple[list[ft.Control], dict]:
+        s = utils.scale(app.size)
         controls = []
         refs = {}
 
@@ -127,122 +130,102 @@ class Settings:
                         controls=[
                             ft.Text(
                                 cat.label.upper(),
-                                color=theme.secondary,
+                                color=app.theme.secondary,
                                 size=int(14 * s),
                                 weight=ft.FontWeight.BOLD,
-                                font_family=theme.font_family
+                                font_family=app.theme.font_family
                             ),
-                            ft.Divider(color=theme.secondary, height=1, thickness=1),
+                            ft.Divider(color=app.theme.secondary, height=1, thickness=1),
                         ]
                     )
                 )
             )
 
             for f in cat.fields:
-                ctrl = self.build_category(f, theme, s, refs)
+                ctrl = self.build_category(f, app, refs)
                 if ctrl is not None:
                     controls.append(ctrl)
 
         return controls, refs
 
-    def build_category(self, f: SettingsField, theme, s: float, refs: dict):
+    def build_category(self, f: SettingsField, app, refs: dict):
+        s = utils.scale(app.size)
         if f.type == "dropdown":
-            ctrl = ft.Dropdown(
+            ctrl = tools.dropdown(app, 14,
                 label=f.label,
                 value=f.value,
-                options=[ft.dropdown.Option(o) for o in f.options],
-                color=theme.primary,
-                border_color=theme.secondary,
-                focused_border_color=theme.primary,
-                label_style=ft.TextStyle(color=theme.secondary),
-                text_style=ft.TextStyle(color=theme.primary),
+                options=[tools.doption(app, o) for o in f.options]
             )
 
         elif f.type == "toggle":
-            switch = ft.Switch(
-                value=f.value,
-                active_color=theme.primary,
-                active_track_color=theme.button_additional,
-                inactive_thumb_color=theme.secondary,
-                inactive_track_color=theme.additional_color
-            )
+            switch = tools.switch(app, 14, value=f.value)
             ctrl = ft.Container(
                 border=ft.Border(
-                    top=ft.BorderSide(theme.outline_width+1, theme.secondary),
-                    bottom=ft.BorderSide(theme.outline_width+1, theme.secondary),
-                    left=ft.BorderSide(theme.outline_width+1, theme.secondary),
-                    right=ft.BorderSide(theme.outline_width+1, theme.secondary)
+                    top=ft.BorderSide(app.theme.outline_width, app.theme.outline),
+                    bottom=ft.BorderSide(app.theme.outline_width, app.theme.outline),
+                    left=ft.BorderSide(app.theme.outline_width, app.theme.outline),
+                    right=ft.BorderSide(app.theme.outline_width, app.theme.outline)
                 ),
+                bgcolor=app.theme.entry,
                 border_radius=8,
                 padding=12 * s,
+                height = tools.adapt_dimensions(app, "h", 20),
                 content=ft.Row(
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     controls=[
-                        ft.Text(f.label, color=theme.primary,
-                                font_family=theme.font_family,
+                        ft.Text(f.label, color=app.theme.primary,
+                                font_family=app.theme.font_family,
                                 size=int(12 * s)),
-                        switch,
-                    ],
-                ),
+                        switch
+                    ]
+                )
             )
             refs[f.id] = (f, switch)
             return ctrl
 
         elif f.type == "text":
-            ctrl = ft.TextField(
-                label=f.label,
-                value=str(f.value) if f.value is not None else "",
-                color=theme.primary,
-                border_color=theme.secondary,
-                focused_border_color=theme.primary,
-                label_style=ft.TextStyle(color=theme.secondary),
-                text_style=ft.TextStyle(color=theme.primary),
-            )
+            ctrl = tools.entry(app, 14,
+                    label=f.label,
+                    value=str(f.value) if f.value is not None else ""
+                )
 
         elif f.type == "slider":
-            slider = ft.Slider(
+            slider = tools.slider(app,
                 value=float(f.value),
                 min=f.min_value,
                 max=f.max_value,
-                divisions=f.divisions,
-                active_color=theme.primary,
-                inactive_color=theme.button_additional,
-                thumb_color=theme.secondary,
-                label="{value}",
+                divisions=f.divisions
             )
             ctrl = ft.Container(
                 border=ft.Border(
-                    top=ft.BorderSide(theme.outline_width+1, theme.secondary),
-                    bottom=ft.BorderSide(theme.outline_width+1, theme.secondary),
-                    left=ft.BorderSide(theme.outline_width+1, theme.secondary),
-                    right=ft.BorderSide(theme.outline_width+1, theme.secondary)
+                    top=ft.BorderSide(app.theme.outline_width, app.theme.outline),
+                    bottom=ft.BorderSide(app.theme.outline_width, app.theme.outline),
+                    left=ft.BorderSide(app.theme.outline_width, app.theme.outline),
+                    right=ft.BorderSide(app.theme.outline_width, app.theme.outline)
                 ),
+                bgcolor=app.theme.entry,
                 border_radius=8,
                 padding=12 * s,
+                height = tools.adapt_dimensions(app, "h", 20),
                 content=ft.Column(
                     spacing=0,
                     controls=[
-                        ft.Text(f.label, color=theme.primary,
-                                font_family=theme.font_family,
+                        ft.Text(f.label, color=app.theme.primary,
+                                font_family=app.theme.font_family,
                                 size=int(12 * s)),
-                        slider,
-                    ],
-                ),
+                        slider
+                    ]
+                )
             )
             refs[f.id] = (f, slider)
             return ctrl
 
         elif f.type == "directory":
-            ctrl = ft.TextField(
+            ctrl = tools.entry(app, 14,
                 label=f.label,
                 value=str(f.value) if f.value is not None else "",
                 hint_text="Enter folder path...",
-                prefix_icon=ft.Icons.FOLDER_OUTLINED,
-                color=theme.primary,
-                border_color=theme.secondary,
-                focused_border_color=theme.primary,
-                label_style=ft.TextStyle(color=theme.secondary),
-                text_style=ft.TextStyle(color=theme.primary),
+                prefix_icon=ft.Icons.FOLDER_OUTLINED
             )
 
         else:
