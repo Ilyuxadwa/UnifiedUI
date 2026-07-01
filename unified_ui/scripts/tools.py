@@ -353,7 +353,6 @@ def data_column(app, font_size, label: str, **kwargs) -> ft.DataColumn:
         **kwargs
     )
  
- 
 class Table:
  
     def __init__(self, app, font_size: int):

@@ -88,6 +88,7 @@ class App:
         await self.load_settings()
 
         self.page.bgcolor = self.theme.background
+        self.apply_picker_themes() 
 
         if self.page.platform in MOBILE_PLATFORMS:
             if not self._initialized:
@@ -129,6 +130,38 @@ class App:
 
         if self.on_ready_async:
             self.page.run_task(self.on_ready_async, self)
+
+    def apply_picker_themes(self):
+        t = self.theme
+        self.page.theme = ft.Theme(
+            time_picker_theme=ft.TimePickerTheme(
+                bgcolor=t.background,
+                dial_bgcolor=t.button_additional,
+                dial_hand_color=t.primary,
+                dial_text_color=t.primary,
+                hour_minute_color=t.entry,
+                hour_minute_text_color=t.primary,
+                day_period_color=t.entry,
+                day_period_text_color=t.secondary,
+                entry_mode_icon_color=t.secondary,
+                cancel_button_style=ft.ButtonStyle(color=t.secondary),
+                confirm_button_style=ft.ButtonStyle(color=t.primary),
+            ),
+            date_picker_theme=ft.DatePickerTheme(
+                bgcolor=t.background,
+                header_bgcolor=t.button_additional,
+                header_foreground_color=t.primary,
+                day_foreground_color=t.primary,
+                today_foreground_color=t.primary,
+                today_bgcolor={ft.ControlState.DEFAULT: t.entry},
+                year_foreground_color=t.primary,
+                weekday_text_style=tools.secondary_text_style(self, 16),
+                year_text_style=tools.secondary_text_style(self, 22),
+                divider_color=t.outline,
+                cancel_button_style=tools.cancel_button_style(self, 14),
+                confirm_button_style=tools.ok_button_style(self, 14),
+            ),
+        )
 
     def app_ui(self):
         s = utils.scale(self.size)
@@ -274,6 +307,8 @@ class App:
 
     def change_theme(self, name: str):
         self.theme = get_theme(name)
+        if self.page:
+            self.apply_picker_themes()
         return self
     
     async def save(self, key: str, value: Any):
