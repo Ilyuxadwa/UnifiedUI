@@ -178,7 +178,7 @@ class Settings:
                                             ),
                                             ft.ControlState.PRESSED: ft.BorderSide(
                                                 app.theme.outline_width+2, color=app.theme.cancel_button
-                                            )})))
+                                            )}), on_click=lambda: app.delete_all()))
 
             
 

@@ -385,7 +385,9 @@ class App:
     def add_saved_keys(self, *keys):
         for key in keys:
             self.saved_keys.append(key)
-    
+
+    def allow_delete_saved(self):
+        self.allow_deleting = True
 
     #=====- UI Building -=====#
 
