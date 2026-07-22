@@ -33,10 +33,12 @@ class App:
         self.size: str = "full"
         self.fixed_size: bool = False
         self.initialized: bool = False
+        self.allow_deleting: bool = False
         self.icon: str | None = None
         self.ui_builder = None
         self.pages: dict = {}
         self.top_bar_controls: list = []
+        self.saved_keys: list = []
         self.current_page: str | None = None
         self.on_ready = None
         self.on_ready_async = None
@@ -255,7 +257,7 @@ class App:
         if self.settings is None:
             controls, refs = [], {}
         else:
-            controls, refs = self.settings.build_controls(self)
+            controls, refs = self.settings.build_controls(self, self.allow_deleting)
 
         def close(e):
             self.page.pop_dialog()
@@ -337,6 +339,10 @@ class App:
     async def delete(self, key: str):
         await self.page.shared_preferences.remove(f"{self.title}.{key}")
 
+    async def delete_all(self):
+        if self.allow_deleting:
+            for key in self.saved_keys:
+                await self.page.shared_preferences.remove(f"{self.title}.{key}")
 
     #=====- Configuration -=====#
 
@@ -375,6 +381,10 @@ class App:
     def set_async_next(self, callback):
         self.on_ready_async = callback
         return self
+    
+    def add_saved_keys(self, *keys):
+        for key in keys:
+            self.saved_keys.append(key)
     
 
     #=====- UI Building -=====#

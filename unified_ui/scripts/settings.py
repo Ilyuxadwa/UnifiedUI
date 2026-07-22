@@ -113,7 +113,7 @@ class Settings:
 
 
 
-    def build_controls(self, app) -> tuple[list[ft.Control], dict]:
+    def build_controls(self, app, delete_all) -> tuple[list[ft.Control], dict]:
         s = utils.scale(app.size)
         controls = []
         refs = {}
@@ -145,6 +145,43 @@ class Settings:
                 ctrl = self.build_category(f, app, refs)
                 if ctrl is not None:
                     controls.append(ctrl)
+
+        if delete_all:
+            controls.append(
+                ft.Container(
+                    padding=int(8 * s),
+                    content=ft.Column(
+                        spacing=int(4 * s),
+                        controls=[
+                            ft.Text(
+                                "DANGER ZONE",
+                                color=app.theme.secondary,
+                                size=int(14 * s),
+                                weight=ft.FontWeight.BOLD,
+                                font_family=app.theme.font_family
+                            ),
+                            ft.Divider(color=app.theme.secondary, height=1, thickness=1),
+                        ]
+                    )
+                )
+            )
+            controls.append(ft.Button("Deleted ALL stored information", 
+                                    style = ft.ButtonStyle(
+                                        color = app.theme.cancel_button,
+                                        bgcolor = app.theme.background,
+                                        side = {
+                                            ft.ControlState.DEFAULT: ft.BorderSide(
+                                                app.theme.outline_width+2, color=app.theme.cancel_button
+                                            ),
+                                            ft.ControlState.HOVERED: ft.BorderSide(
+                                                app.theme.outline_width+2, color=app.theme.cancel_button
+                                            ),
+                                            ft.ControlState.PRESSED: ft.BorderSide(
+                                                app.theme.outline_width+2, color=app.theme.cancel_button
+                                            )})))
+
+            
+
 
         return controls, refs
 
