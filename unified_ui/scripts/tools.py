@@ -312,7 +312,7 @@ def switch(app, font_size, **kwargs) -> ft.Switch:
 def progress_bar(app, **kwargs) -> ft.ProgressBar:
     return ft.ProgressBar(
         color=app.theme.primary,
-        bgcolor=app.theme.additional_color,
+        bgcolor=app.theme.entry,
         border_radius=8,
         **kwargs,
     )
@@ -320,7 +320,7 @@ def progress_bar(app, **kwargs) -> ft.ProgressBar:
 def progress_ring(app, **kwargs) -> ft.ProgressRing:
     return ft.ProgressRing(
         color=app.theme.primary,
-        bgcolor=app.theme.additional_color,
+        bgcolor=app.theme.entry,
         **kwargs
     )
 

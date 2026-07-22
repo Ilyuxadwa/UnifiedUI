@@ -36,6 +36,7 @@ class App:
         self.icon: str | None = None
         self.ui_builder = None
         self.pages: dict = {}
+        self.top_bar_controls: list = []
         self.current_page: str | None = None
         self.on_ready = None
         self.on_ready_async = None
@@ -170,15 +171,30 @@ class App:
             self.body = ft.ListView(expand=True, spacing=0, padding=ft.Padding(left=16, right=16, top=12, bottom=12))
             self.ui_builder(self)
 
-        right_controls = [
-            ft.IconButton(
+        right_controls = []
+
+        if self.top_bar_controls:
+            for c in self.top_bar_controls:
+                if c[2]:
+                    color = c[2]
+                else:
+                    color = self.theme.secondary
+                right_controls.append(ft.IconButton(
+                    icon=c[0],
+                    icon_color=color,
+                    icon_size=int(36 * s),
+                    tooltip=c[3],
+                    on_click=lambda e: self.open_dialog(c[1])
+                ))
+
+        right_controls.append(ft.IconButton(
                 icon=ft.Icons.SETTINGS,
                 icon_color=self.theme.secondary,
                 icon_size=int(36 * s),
                 tooltip="Settings",
                 on_click=lambda e: self.open_settings()
-            )
-        ]
+            ))
+            
 
         if self.size == "full" and self.page.platform in DESKTOP_PLATFORMS:
             right_controls.append(
@@ -370,6 +386,9 @@ class App:
             self.page.update()
         return self
 
+    def add_top_button(self, icon, dialog_window, tooltip, icon_color = None):
+        self.top_bar_controls.append([icon, dialog_window, icon_color, tooltip])
+
     def update(self):
         self.body.controls.clear()
         if self.ui_builder:
@@ -418,3 +437,6 @@ class App:
             return self.page.window.width - int(32*s), self.page.window.height - int(24*s)
         else:
             return utils.get_screen_resolution()
+        
+    def open_dialog(self, dialog):
+        self.page.show_dialog(dialog)
