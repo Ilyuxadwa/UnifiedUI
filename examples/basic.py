@@ -5,6 +5,7 @@ import flet as ft
 sys.path.append(os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "unified_ui", "scripts")))
  
 from unified_ui import App, Settings, tools
+from unified_ui.logger import Logger
  
 settings = Settings()
 example_settings_category = settings.add_category("example", "Example Settings")
@@ -18,13 +19,31 @@ example_settings_category.add_directory("directory", "Example Directory", on_cha
 
 def ui(app):
 
+    logger = Logger()
     table = tools.Table(app, 12).cols("Column 1", "Column 2", "Column 3").add_row("Some 1", "Information 1", "Here 1").add_row("Some 2", "Information 2", "Here 2")
     table.size(w=80, h=50)
-    
+
+    logger.info("This is test log.")
+    logger.warn("Testing the warn system.")
+    logger.error("Testing the error.")
+    logger.fail("And finally fail!")
+    logger.info("This is test log.")
+    logger.warn("Testing the warn system.")
+    logger.error("Testing the error.")
+    logger.fail("And finally fail!")
+    logger.info("This is test log.")
+    logger.warn("Testing the warn system.")
+    logger.error("Testing the error.")
+    logger.fail("And finally fail!")
+    logger.info("This is test log.")
+    logger.warn("Testing the warn system.")
+    logger.error("Testing the error.")
+    logger.fail("And finally fail!")
+        
     date_picker = ft.DatePicker()
     app.add_element(app.alignment("rcenter", 
-                        ft.Button("Main Button", width = tools.adapt_dimensions(app, "w", 14), height = tools.adapt_dimensions(app, "h", 10), style=tools.main_button_style(app, 12, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda : app.page.show_dialog(date_picker)),
-                        ft.Button("Additional Button", width = tools.adapt_dimensions(app, "w", 16), height = tools.adapt_dimensions(app, "h", 8), style=tools.additional_button_style(app, 12, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda _: print("Button clicked!")),
+                        ft.Button("Main Button", width = tools.adapt_dimensions(app, "w", 14), height = tools.adapt_dimensions(app, "h", 10), style=tools.main_button_style(app, 12, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda: app.page.show_dialog(date_picker)),
+                        ft.Button("Additional Button", width = tools.adapt_dimensions(app, "w", 16), height = tools.adapt_dimensions(app, "h", 8), style=tools.additional_button_style(app, 12, padding = 5), icon=ft.Icons.SETTINGS_ROUNDED, on_click=lambda: app.show_logs(logger)),
                         ft.Button("Okay", width = tools.adapt_dimensions(app, "w", 12), height = tools.adapt_dimensions(app, "h", 6), style=tools.ok_button_style(app, 12, padding = 5)),
                         ft.Button("Cancel", width = tools.adapt_dimensions(app, "w", 12), height = tools.adapt_dimensions(app, "h", 6), style=tools.cancel_button_style(app, 12, padding = 5)),
                     expand=True))

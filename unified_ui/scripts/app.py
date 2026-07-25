@@ -3,6 +3,7 @@ import flet as ft
 from typing import Any
 
 from .theme import get_theme, available_themes, Theme
+from .logger import Logger
 from .settings import Settings, SettingsField
 from .settings import Settings
 from . import utils
@@ -452,3 +453,39 @@ class App:
         
     def open_dialog(self, dialog):
         self.page.show_dialog(dialog)
+
+    def show_logs(self, logger: Logger):
+        s = utils.scale(self.size)
+
+        raw_logs = logger.get()
+        logs = []
+        for log in raw_logs:
+            logs.append(ft.Text(log, color = self.theme.secondary))
+
+        logs_window = ft.AlertDialog(
+                    bgcolor=self.theme.background,
+                    title=ft.Text(
+                        "Logs",
+                        color=self.theme.primary,
+                        weight=ft.FontWeight.BOLD,
+                        font_family=self.theme.font_family,
+                        size=int(24 * s)
+                    ),
+                    content = ft.Container(
+                        width=self.page.window.width - 300 * s,
+                        height=self.page.window.height - 100 * s,
+                        content=ft.Column(
+                            tight=True,
+                            spacing=int(16 * s),
+                            scroll=ft.ScrollMode.AUTO,
+                            controls=logs
+                    )),
+                    actions=[
+                        ft.FilledButton(
+                            "Close",
+                            style=ft.ButtonStyle(
+                            bgcolor=self.theme.cancel_button,
+                            color=self.theme.background),
+                            on_click=lambda: self.page.pop_dialog(),
+                        )])
+        self.open_dialog(logs_window)
