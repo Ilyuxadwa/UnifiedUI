@@ -178,10 +178,17 @@ class App:
 
         if self.top_bar_controls:
             for c in self.top_bar_controls:
-                if c[2]:
+                button_pages = c[4] if len(c) > 4 else None
+                if button_pages is not None and self.current_page not in button_pages:
+                    continue
+
+                if callable(c[2]):
+                    color = c[2](self.theme)
+                elif c[2]:
                     color = c[2]
                 else:
                     color = self.theme.secondary
+
                 right_controls.append(ft.IconButton(
                     icon=c[0],
                     icon_color=color,
@@ -399,8 +406,10 @@ class App:
             self.page.update()
         return self
 
-    def add_top_button(self, icon, dialog_window, tooltip, icon_color = None):
-        self.top_bar_controls.append([icon, dialog_window, icon_color, tooltip])
+    def add_top_button(self, icon, dialog_window, tooltip, icon_color=None, pages=None):
+        if isinstance(pages, str):
+            pages = [pages]
+        self.top_bar_controls.append([icon, dialog_window, icon_color, tooltip, pages])
 
     def update(self):
         self.body.controls.clear()
