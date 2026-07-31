@@ -174,36 +174,8 @@ class App:
             self.body = ft.ListView(expand=True, spacing=0, padding=ft.Padding(left=16, right=16, top=12, bottom=12))
             self.ui_builder(self)
 
-        right_controls = []
-
-        if self.top_bar_controls:
-            for c in self.top_bar_controls:
-                button_pages = c[4] if len(c) > 4 else None
-                if button_pages is not None and self.current_page not in button_pages:
-                    continue
-
-                if callable(c[2]):
-                    color = c[2](self.theme)
-                elif c[2]:
-                    color = c[2]
-                else:
-                    color = self.theme.secondary
-
-                right_controls.append(ft.IconButton(
-                    icon=c[0],
-                    icon_color=color,
-                    icon_size=int(36 * s),
-                    tooltip=c[3],
-                    on_click=lambda e: self.open_dialog(c[1])
-                ))
-
-        right_controls.append(ft.IconButton(
-                icon=ft.Icons.SETTINGS,
-                icon_color=self.theme.secondary,
-                icon_size=int(36 * s),
-                tooltip="Settings",
-                on_click=lambda e: self.open_settings()
-            ))
+        right_controls = self.build_top_bar_controls()
+        self.top_bar_row = ft.Row(spacing=0, controls=right_controls)
             
 
         if self.size == "full" and self.page.platform in DESKTOP_PLATFORMS:
@@ -235,7 +207,7 @@ class App:
                                 weight=ft.FontWeight.BOLD,
                                 font_family=self.theme.font_family,
                             ),
-                            ft.Row(spacing=0, controls=right_controls)
+                            self.top_bar_row
                         ]
                     )
                 ),
@@ -258,6 +230,52 @@ class App:
                 )
             ]
         ))
+
+    def build_top_bar_controls(self):
+        s = utils.scale(self.size)
+        right_controls = []
+
+        if self.top_bar_controls:
+            for c in self.top_bar_controls:
+                button_pages = c[4] if len(c) > 4 else None
+                if button_pages is not None and self.current_page not in button_pages:
+                    continue
+
+                if callable(c[2]):
+                    color = c[2](self.theme)
+                elif c[2]:
+                    color = c[2]
+                else:
+                    color = self.theme.secondary
+
+                right_controls.append(ft.IconButton(
+                    icon=c[0],
+                    icon_color=color,
+                    icon_size=int(36 * s),
+                    tooltip=c[3],
+                    on_click=lambda e: self.open_dialog(c[1])
+                ))
+
+        right_controls.append(ft.IconButton(
+                icon=ft.Icons.SETTINGS,
+                icon_color=self.theme.secondary,
+                icon_size=int(36 * s),
+                tooltip="Settings",
+                on_click=lambda e: self.open_settings()
+            ))
+
+        if self.size == "full" and self.page.platform in DESKTOP_PLATFORMS:
+            right_controls.append(
+                ft.IconButton(
+                    icon=ft.Icons.CLOSE_ROUNDED,
+                    icon_color=self.theme.cancel_button,
+                    icon_size=int(36 * s),
+                    tooltip="Close",
+                    on_click=lambda e: self.page.run_task(self.page.window.close)
+                )
+            )
+
+        return right_controls
 
     def open_settings(self):
         s = utils.scale(self.size)
@@ -415,6 +433,8 @@ class App:
         self.body.controls.clear()
         if self.ui_builder:
             self.ui_builder(self)
+        if self.page and hasattr(self, "top_bar_row"):
+            self.top_bar_row.controls = self.build_top_bar_controls()
         if self.page:
             self.page.update()
         return self
