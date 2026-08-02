@@ -253,7 +253,7 @@ class App:
                     icon_color=color,
                     icon_size=int(36 * s),
                     tooltip=c[3],
-                    on_click=lambda e: self.open_dialog(c[1])
+                    on_click=lambda e: self.open_app_dialog(c[1])
                 ))
 
         right_controls.append(ft.IconButton(
@@ -332,6 +332,11 @@ class App:
 
         self.page.show_dialog(dialog)
 
+    def open_app_dialog(self, dialog):
+        if callable(dialog) and not isinstance(dialog, ft.Control):
+            dialog = dialog(self)
+        self.page.show_dialog(dialog)
+
     async def save_settings(self):
         if self.settings:
             for f in self.settings.fields:
@@ -369,6 +374,7 @@ class App:
         if self.allow_deleting:
             for key in self.saved_keys:
                 await self.page.shared_preferences.remove(f"{self.title}.{key}")
+                await self.page.window.close()
 
     #=====- Configuration -=====#
 
