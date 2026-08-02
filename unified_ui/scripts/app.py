@@ -1,3 +1,5 @@
+import asyncio
+
 import flet as ft
 
 from typing import Any
@@ -374,7 +376,7 @@ class App:
         if self.allow_deleting:
             for key in self.saved_keys:
                 await self.page.shared_preferences.remove(f"{self.title}.{key}")
-                await self.page.window.close()
+            await self.page.window.close()
 
     #=====- Configuration -=====#
 
@@ -443,6 +445,7 @@ class App:
             self.top_bar_row.controls = self.build_top_bar_controls()
         if self.page:
             self.page.update()
+            self.page.run_task(self.body.scroll_to, 0, None, None, 1)
         return self
 
     def add_page(self, name: str, builder):
