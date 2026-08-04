@@ -179,18 +179,6 @@ class App:
         right_controls = self.build_top_bar_controls()
         self.top_bar_row = ft.Row(spacing=0, controls=right_controls)
             
-
-        if self.size == "full" and self.page.platform in DESKTOP_PLATFORMS:
-            right_controls.append(
-                ft.IconButton(
-                    icon=ft.Icons.CLOSE_ROUNDED,
-                    icon_color=self.theme.cancel_button,
-                    icon_size=int(36 * s),
-                    tooltip="Close",
-                    on_click=lambda e: self.page.run_task(self.page.window.close)
-                )
-            )
-
         return self.page.add(ft.Column(
             expand=True,
             spacing=0,
