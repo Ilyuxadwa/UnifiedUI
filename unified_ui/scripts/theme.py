@@ -22,7 +22,7 @@ class ThemeColors:
     shadow: str                  = "#ffffff"
     outline: str                 = "#ffffff"
     error: str                   = "#ffffff"
-    warn: str                    = "#ffffff"
+    warning: str                 = "#ffffff"
     info: str                    = "#ffffff"
     fail: str                    = "#ffffff"
     success: str                 = "#ffffff"
@@ -91,7 +91,7 @@ class Theme:
         self.shadow: str                  = data.colors.shadow
         self.outline: str                 = data.colors.outline
         self.error_color: str             = data.colors.error
-        self.warn_color: str              = data.colors.warn
+        self.warning_color: str           = data.colors.warning
         self.info_color: str              = data.colors.info
         self.fail_color: str              = data.colors.fail
         self.success_color: str           = data.colors.success

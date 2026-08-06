@@ -486,7 +486,18 @@ class App:
         raw_logs = logger.get()
         logs = []
         for log in raw_logs:
-            logs.append(ft.Text(log, color = self.theme.secondary))
+            if log["type"] == "INFO":
+                c = self.theme.info_color
+            elif log["type"] == "WARNING":
+                c = self.theme.warning_color
+            elif log["type"] == "ERROR":
+                c = self.theme.error_color
+            elif log["type"] == "FAIL":
+                c = self.theme.fail_color
+            elif log["type"] == "SUCCESS":
+                c = self.theme.success_color
+
+            logs.append(ft.Text(log["log"], color = c))
 
         logs_window = ft.AlertDialog(
                     bgcolor=self.theme.background,
@@ -507,6 +518,13 @@ class App:
                             controls=logs
                     )),
                     actions=[
+                        ft.FilledButton(
+                            "Copy",
+                            style=ft.ButtonStyle(
+                            bgcolor=self.theme.button,
+                            color=self.theme.background),
+                            on_click=lambda: logger.copy(),
+                        ),
                         ft.FilledButton(
                             "Close",
                             style=ft.ButtonStyle(
