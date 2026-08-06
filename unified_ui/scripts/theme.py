@@ -19,8 +19,13 @@ class ThemeColors:
     cancel_button: str           = "#ffffff"
     primary: str                 = "#ffffff"
     secondary: str               = "#ffffff"
-    label_text: str              = "#ffffff"
+    shadow: str                  = "#ffffff"
     outline: str                 = "#ffffff"
+    error: str                   = "#ffffff"
+    warn: str                    = "#ffffff"
+    info: str                    = "#ffffff"
+    fail: str                    = "#ffffff"
+    success: str                 = "#ffffff"
  
     @classmethod
     def from_dict(cls, data: dict) -> "ThemeColors":
@@ -42,6 +47,7 @@ class ThemeFont:
 @dataclass
 class ThemeOthers:
     outline_width: int = 1
+    elevation: int = 0
  
     @classmethod
     def from_dict(cls, data: dict) -> "ThemeOthers":
@@ -82,10 +88,16 @@ class Theme:
         self.cancel_button: str           = data.colors.cancel_button
         self.primary: str                 = data.colors.primary
         self.secondary: str               = data.colors.secondary
-        self.label_text: str              = data.colors.label_text
+        self.shadow: str                  = data.colors.shadow
         self.outline: str                 = data.colors.outline
+        self.error_color: str             = data.colors.error
+        self.warn_color: str              = data.colors.warn
+        self.info_color: str              = data.colors.info
+        self.fail_color: str              = data.colors.fail
+        self.success_color: str           = data.colors.success
         self.font_family: str             = data.font.family
         self.outline_width: int           = data.others.outline_width
+        self.elevation: int               = data.others.elevation
  
     def __repr__(self) -> str:
         return f"<Theme name={self.name!r}>"

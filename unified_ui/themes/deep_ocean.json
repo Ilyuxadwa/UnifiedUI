@@ -10,8 +10,13 @@
         "cancel_button": "#7c2ca3",
         "primary": "#c9e0ff",
         "secondary": "#6777ae",
-        "label_text": "#0b2408",
-        "outline": "#011021"
+        "shadow": "#0b2408",
+        "outline": "#011021",
+        "error": "#ff0000",
+        "warning": "#ffcc00",
+        "info": "#00ccff",
+        "fail": "#ff0000",
+        "success": "#00ff00"
     },
 
     "font": {
@@ -19,6 +24,7 @@
     },
 
     "others": {
-        "outline_width": 2
+        "outline_width": 0,
+        "elevation": 3
     }
 }
