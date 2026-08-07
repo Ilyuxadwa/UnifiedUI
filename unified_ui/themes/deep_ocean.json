@@ -4,19 +4,19 @@
         "background": "#0b203c",
         "additional_color": "#143055",
         "button": "#3756a6",
-        "button_additional": "#213977",
+        "button_additional": "#2a3960",
         "entry": "#273370",
         "ok_button": "#3999af",
         "cancel_button": "#7c2ca3",
         "primary": "#c9e0ff",
         "secondary": "#6777ae",
         "shadow": "#0b2408",
-        "outline": "#011021",
-        "error": "#ff0000",
-        "warning": "#ffcc00",
-        "info": "#00ccff",
-        "fail": "#ff0000",
-        "success": "#00ff00"
+        "outline": "#aab8c8",
+        "error": "#c64474",
+        "warning": "#b1ce2f",
+        "info": "#9bc7d2",
+        "fail": "#a62449",
+        "success": "#37cb81"
     },
 
     "font": {
@@ -25,6 +25,7 @@
 
     "others": {
         "outline_width": 0,
-        "elevation": 3
+        "border_radius": 10,
+        "elevation": 0
     }
 }

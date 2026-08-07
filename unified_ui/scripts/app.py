@@ -509,8 +509,11 @@ class App:
                         size=int(24 * s)
                     ),
                     content = ft.Container(
+                        bgcolor=self.theme.additional_color,
                         width=self.page.window.width - 300 * s,
                         height=self.page.window.height - 100 * s,
+                        border_radius=self.theme.border_radius,
+                        padding = 16*s,
                         content=ft.Column(
                             tight=True,
                             spacing=int(16 * s),

@@ -47,12 +47,15 @@ class ThemeFont:
 @dataclass
 class ThemeOthers:
     outline_width: int = 1
+    border_radius: int = 0
     elevation: int = 0
  
     @classmethod
     def from_dict(cls, data: dict) -> "ThemeOthers":
         return cls(
             outline_width=int(data.get("outline_width", 1)),
+            border_radius=int(data.get("border_radius", 0)),
+            elevation=int(data.get("elevation", 0))
         )
  
  
@@ -97,6 +100,7 @@ class Theme:
         self.success_color: str           = data.colors.success
         self.font_family: str             = data.font.family
         self.outline_width: int           = data.others.outline_width
+        self.border_radius: int           = data.others.border_radius
         self.elevation: int               = data.others.elevation
  
     def __repr__(self) -> str:

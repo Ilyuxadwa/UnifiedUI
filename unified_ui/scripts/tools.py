@@ -171,15 +171,6 @@ def cancel_button_style(app, font_size, **kwargs) -> ft.ButtonStyle:
         **kwargs
     )
  
-def label_style(app, font_size, **kwargs) -> ft.TextStyle:
-    s = utils.scale(app.size)
-    return ft.TextStyle(
-        color=app.theme.label_text,
-        font_family=app.theme.font_family,
-        size=font_size * s
-        **kwargs
-    )
- 
 def primary_text_style(app, font_size, **kwargs) -> ft.TextStyle:
     s = utils.scale(app.size)
     return ft.TextStyle(
@@ -260,10 +251,6 @@ def checkbox(app, font_size, **kwargs) -> ft.Checkbox:
     return ft.Checkbox(
         fill_color=app.theme.entry,
         check_color=app.theme.primary,
-        border_side=ft.BorderSide(
-            width=app.theme.outline_width,
-            color=app.theme.outline,
-        ),
         label_style=ft.TextStyle(
             color=app.theme.primary,
             font_family=app.theme.font_family,

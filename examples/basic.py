@@ -23,22 +23,12 @@ def ui(app):
     table = tools.Table(app, 12).cols("Column 1", "Column 2", "Column 3").add_row("Some 1", "Information 1", "Here 1").add_row("Some 2", "Information 2", "Here 2")
     table.size(w=80, h=50)
 
-    logger.info("This is test log.")
-    logger.warn("Testing the warn system.")
-    logger.error("Testing the error.")
-    logger.fail("And finally fail!")
-    logger.info("This is test log.")
-    logger.warn("Testing the warn system.")
-    logger.error("Testing the error.")
-    logger.fail("And finally fail!")
-    logger.info("This is test log.")
-    logger.warn("Testing the warn system.")
-    logger.error("Testing the error.")
-    logger.fail("And finally fail!")
-    logger.info("This is test log.")
-    logger.warn("Testing the warn system.")
-    logger.error("Testing the error.")
-    logger.fail("And finally fail!")
+    for i in range(4):
+        logger.info("This is test log.")
+        logger.warn("Testing the warn system.")
+        logger.error("Testing the error.")
+        logger.success("You did it!")
+        logger.fail("Oh no, again fail...")
         
     date_picker = ft.DatePicker()
     app.add_element(app.alignment("rcenter", 

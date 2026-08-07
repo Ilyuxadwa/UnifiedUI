@@ -11,12 +11,12 @@
         "primary": "#64af5d",
         "secondary": "#4bb94c",
         "shadow": "#3c6c37",
-        "outline": "#34962d",
-        "error": "#ff0000",
-        "warning": "#ffcc00",
-        "info": "#00ccff",
-        "fail": "#ff0000",
-        "success": "#00ff00"
+        "outline": "#f2fff1",
+        "error": "#d44d4d",
+        "warning": "#b09a1f",
+        "info": "#415f46",
+        "fail": "#9d1a00",
+        "success": "#006500"
     },
 
     "font": {
@@ -25,6 +25,7 @@
 
     "others": {
         "outline_width": 0,
-        "elevation": 3
+        "border_radius": 10,
+        "elevation": 0
     }
 }

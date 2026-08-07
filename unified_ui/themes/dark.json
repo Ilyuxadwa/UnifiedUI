@@ -12,11 +12,11 @@
         "secondary": "#808080",
         "shadow": "#ffffff",
         "outline": "404040",
-        "error": "#ff0000",
-        "warning": "#ffcc00",
-        "info": "#00ccff",
-        "fail": "#ff0000",
-        "success": "#00ff00"
+        "error": "#be2020",
+        "warning": "#c6a41e",
+        "info": "#b2b2b2",
+        "fail": "#b50000",
+        "success": "#009500"
     },
 
     "font": {
@@ -25,6 +25,7 @@
 
     "others": {
         "outline_width": 0,
-        "elevation": 3
+        "border_radius": 10,
+        "elevation": 0
     }
 }
