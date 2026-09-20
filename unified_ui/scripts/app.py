@@ -1,8 +1,7 @@
 import asyncio
+from typing import Any
 
 import flet as ft
-
-from typing import Any
 
 from .theme import get_theme, available_themes, Theme
 from .logger import Logger
@@ -46,9 +45,11 @@ class App:
         self.on_ready = None
         self.on_ready_async = None
 
+
     def run(self, title: str = ""):
         self.title = title
         ft.app(target=self.build)
+
 
     async def build(self, page: ft.Page):
         self.page = page
@@ -137,6 +138,7 @@ class App:
         if self.on_ready_async:
             self.page.run_task(self.on_ready_async, self)
 
+
     def apply_picker_themes(self):
         t = self.theme
         self.page.theme = ft.Theme(
@@ -168,6 +170,7 @@ class App:
                 confirm_button_style=tools.ok_button_style(self, 14),
             ),
         )
+
 
     def app_ui(self):
         s = utils.scale(self.size)
@@ -221,6 +224,7 @@ class App:
             ]
         ))
 
+
     def build_top_bar_controls(self):
         s = utils.scale(self.size)
         right_controls = []
@@ -266,6 +270,7 @@ class App:
             )
 
         return right_controls
+
 
     def open_settings(self):
         s = utils.scale(self.size)
@@ -322,10 +327,6 @@ class App:
 
         self.page.show_dialog(dialog)
 
-    def open_app_dialog(self, dialog):
-        if callable(dialog) and not isinstance(dialog, ft.Control):
-            dialog = dialog(self)
-        self.page.show_dialog(dialog)
 
     async def save_settings(self):
         if self.settings:
@@ -334,6 +335,7 @@ class App:
             self.page.controls.clear()
             self.page.update()
             await self.build(self.page)
+
 
     async def load_settings(self):
         if self.settings:
@@ -344,11 +346,20 @@ class App:
                     if f.on_change:
                         f.on_change(val)
 
+
+
+    def open_app_dialog(self, dialog):
+        if callable(dialog) and not isinstance(dialog, ft.Control):
+            dialog = dialog(self)
+        self.page.show_dialog(dialog)    
+
     def change_theme(self, name: str):
         self.theme = get_theme(name)
         if self.page:
             self.apply_picker_themes()
         return self
+
+
     
     async def save(self, key: str, value: Any):
         await self.page.shared_preferences.set(f"{self.title}.{key}", value)
@@ -365,6 +376,8 @@ class App:
             for key in self.saved_keys:
                 await self.page.shared_preferences.remove(f"{self.title}.{key}")
             await self.page.window.close()
+
+
 
     #=====- Configuration -=====#
 
@@ -410,6 +423,8 @@ class App:
 
     def allow_delete_saved(self):
         self.allow_deleting = True
+
+
 
     #=====- UI Building -=====#
 
@@ -479,6 +494,7 @@ class App:
         
     def open_dialog(self, dialog):
         self.page.show_dialog(dialog)
+
 
     def show_logs(self, logger: Logger):
         s = utils.scale(self.size)

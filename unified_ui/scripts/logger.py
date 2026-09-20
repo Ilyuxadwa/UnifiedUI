@@ -1,6 +1,8 @@
 from datetime import datetime
 import pyperclip
 
+
+
 class Logger:
     def __init__(self):
         self.history: list[dict] = [{"type": "INFO", "log": f"Logger initialized."}]

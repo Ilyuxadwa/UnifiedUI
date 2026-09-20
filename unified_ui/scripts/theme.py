@@ -5,8 +5,10 @@ from typing import Optional
 from importlib.resources import files
 
 
+
 THEMES_DIR = files("unified_ui.themes")
- 
+
+
  
 @dataclass
 class ThemeColors:
@@ -32,6 +34,7 @@ class ThemeColors:
         known = cls.__dataclass_fields__.keys()
         return cls(**{k: v for k, v in data.items() if k in known})
  
+
  
 @dataclass
 class ThemeFont:
@@ -42,6 +45,7 @@ class ThemeFont:
         return cls(
             family=data.get("family", "Arial")
         )
+
  
  
 @dataclass
@@ -58,6 +62,7 @@ class ThemeOthers:
             elevation=int(data.get("elevation", 0))
         )
  
+
  
 @dataclass
 class ThemeData:
@@ -77,6 +82,7 @@ class ThemeData:
             source=source,
         )
  
+
  
 class Theme:
  
@@ -105,6 +111,7 @@ class Theme:
  
     def __repr__(self) -> str:
         return f"<Theme name={self.name!r}>"
+
  
  
 def load_all() -> dict[str, Theme]:
@@ -120,6 +127,7 @@ def load_all() -> dict[str, Theme]:
  
     return result
  
+
  
 def get_theme(name: str = "Light") -> Theme:
     themes = load_all()
@@ -133,7 +141,7 @@ def get_theme(name: str = "Light") -> Theme:
     fallback = next(iter(themes.values()))
     print(f"[theme] '{name}' not found, falling back to '{fallback.name}'.")
     return fallback
- 
+
  
 def get_all_themes() -> dict[str, Theme]:
     return load_all()

@@ -6,6 +6,8 @@ sys.path.append(os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "
  
 from unified_ui import App, Settings, tools
 from unified_ui.logger import Logger
+
+
  
 settings = Settings()
 example_settings_category = settings.add_category("example", "Example Settings")
@@ -16,6 +18,8 @@ example_settings_category.add_text("text", "Example Text", "Hello, World!", on_c
                     : print(f"Text changed to: {value}"))
 example_settings_category.add_slider("slider", "Example Slider", 0.5, min_value=0.0, max_value=1.0, on_change=lambda value: print(f"Slider changed to: {value}"))
 example_settings_category.add_directory("directory", "Example Directory", on_change=lambda value: print(f"Directory changed to: {value}"))
+
+
 
 def ui(app):
 
@@ -58,9 +62,12 @@ def ui(app):
     app.add_element(app.alignment("rcenter",
                         table.build(),
                     expand=True, height=tools.adapt_dimensions(app, "h", 50)))
+
     
 def main(app):
     print("hi!")
+
+
 
 app = App()
 app.set_orientation("landscape")

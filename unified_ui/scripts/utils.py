@@ -1,5 +1,7 @@
 import platform
 
+
+
 def get_screen_resolution() -> tuple[int, int]:
     if platform.system() == "Windows":
         try:
@@ -21,7 +23,6 @@ def get_screen_resolution() -> tuple[int, int]:
         pass
 
     return 1920, 1080
-
 
 
 def scale(size: str):

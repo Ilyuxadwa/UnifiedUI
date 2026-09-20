@@ -1,6 +1,8 @@
 import flet as ft
 from . import utils
 
+
+
 def adapt_dimensions(app, dim: str, size: int):
     w, h = app.get_work_area()
     if dim == "w":
@@ -339,6 +341,7 @@ def data_column(app, font_size, label: str, **kwargs) -> ft.DataColumn:
         ),
         **kwargs
     )
+
  
 class Table:
  

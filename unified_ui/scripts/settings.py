@@ -1,8 +1,10 @@
 from dataclasses import dataclass, field
 from typing import Any, Callable, Literal
 import flet as ft
+
 from . import tools
 from . import utils
+
 
 
 @dataclass
@@ -16,6 +18,7 @@ class SettingsField:
     min_value: float = 0.0
     max_value: float = 1.0
     divisions: int | None = None
+
 
 
 @dataclass
@@ -97,7 +100,6 @@ class Settings:
             if cat.id == category_id:
                 return cat
         raise KeyError(f"No category with id '{category_id}'")
-    
 
 
     @property
@@ -110,7 +112,6 @@ class Settings:
             if f.id == id:
                 return f.value
         raise KeyError(f"No setting with id '{id}'")
-
 
 
     def build_controls(self, app, delete_all) -> tuple[list[ft.Control], dict]:
@@ -133,13 +134,8 @@ class Settings:
                                 color=app.theme.secondary,
                                 size=int(14 * s),
                                 weight=ft.FontWeight.BOLD,
-                                font_family=app.theme.font_family
-                            ),
-                            ft.Divider(color=app.theme.secondary, height=1, thickness=1),
-                        ]
-                    )
-                )
-            )
+                                font_family=app.theme.font_family),
+                            ft.Divider(color=app.theme.secondary, height=1, thickness=1)])))
 
             for f in cat.fields:
                 ctrl = self.build_category(f, app, refs)
@@ -158,32 +154,24 @@ class Settings:
                                 color=app.theme.secondary,
                                 size=int(14 * s),
                                 weight=ft.FontWeight.BOLD,
-                                font_family=app.theme.font_family
-                            ),
-                            ft.Divider(color=app.theme.secondary, height=1, thickness=1),
-                        ]
-                    )
-                )
-            )
+                                font_family=app.theme.font_family),
+                            ft.Divider(color=app.theme.secondary, height=1, thickness=1)])))
+            
             controls.append(ft.Button("Deleted ALL stored information", 
                                     style = ft.ButtonStyle(
                                         color = app.theme.cancel_button,
                                         bgcolor = app.theme.background,
                                         side = {
                                             ft.ControlState.DEFAULT: ft.BorderSide(
-                                                app.theme.outline_width+2, color=app.theme.cancel_button
-                                            ),
+                                                app.theme.outline_width+2, color=app.theme.cancel_button),
                                             ft.ControlState.HOVERED: ft.BorderSide(
-                                                app.theme.outline_width+2, color=app.theme.cancel_button
-                                            ),
+                                                app.theme.outline_width+2, color=app.theme.cancel_button),
                                             ft.ControlState.PRESSED: ft.BorderSide(
-                                                app.theme.outline_width+2, color=app.theme.cancel_button
-                                            )}), on_click=lambda: app.page.run_task(app.delete_all)))
-
-            
-
+                                                app.theme.outline_width+2, color=app.theme.cancel_button)}), 
+                                            on_click=lambda: app.page.run_task(app.delete_all)))
 
         return controls, refs
+
 
     def build_category(self, f: SettingsField, app, refs: dict):
         s = utils.scale(app.size)
@@ -201,8 +189,7 @@ class Settings:
                     top=ft.BorderSide(app.theme.outline_width, app.theme.outline),
                     bottom=ft.BorderSide(app.theme.outline_width, app.theme.outline),
                     left=ft.BorderSide(app.theme.outline_width, app.theme.outline),
-                    right=ft.BorderSide(app.theme.outline_width, app.theme.outline)
-                ),
+                    right=ft.BorderSide(app.theme.outline_width, app.theme.outline)),
                 bgcolor=app.theme.entry,
                 border_radius=8,
                 padding=12 * s,
@@ -213,33 +200,29 @@ class Settings:
                         ft.Text(f.label, color=app.theme.primary,
                                 font_family=app.theme.font_family,
                                 size=int(12 * s)),
-                        switch
-                    ]
-                )
-            )
+                        switch]))
+            
             refs[f.id] = (f, switch)
             return ctrl
 
         elif f.type == "text":
             ctrl = tools.entry(app, 14,
                     label=f.label,
-                    value=str(f.value) if f.value is not None else ""
-                )
+                    value=str(f.value) if f.value is not None else "")
 
         elif f.type == "slider":
             slider = tools.slider(app,
                 value=float(f.value),
                 min=f.min_value,
                 max=f.max_value,
-                divisions=f.divisions
-            )
+                divisions=f.divisions)
+            
             ctrl = ft.Container(
                 border=ft.Border(
                     top=ft.BorderSide(app.theme.outline_width, app.theme.outline),
                     bottom=ft.BorderSide(app.theme.outline_width, app.theme.outline),
                     left=ft.BorderSide(app.theme.outline_width, app.theme.outline),
-                    right=ft.BorderSide(app.theme.outline_width, app.theme.outline)
-                ),
+                    right=ft.BorderSide(app.theme.outline_width, app.theme.outline)),
                 bgcolor=app.theme.entry,
                 border_radius=8,
                 padding=12 * s,
@@ -250,10 +233,8 @@ class Settings:
                         ft.Text(f.label, color=app.theme.primary,
                                 font_family=app.theme.font_family,
                                 size=int(12 * s)),
-                        slider
-                    ]
-                )
-            )
+                        slider]))
+            
             refs[f.id] = (f, slider)
             return ctrl
 
@@ -262,14 +243,14 @@ class Settings:
                 label=f.label,
                 value=str(f.value) if f.value is not None else "",
                 hint_text="Enter folder path...",
-                prefix_icon=ft.Icons.FOLDER_OUTLINED
-            )
+                prefix_icon=ft.Icons.FOLDER_OUTLINED)
 
         else:
             return None
 
         refs[f.id] = (f, ctrl)
         return ctrl
+
 
     def apply(self, refs: dict):
         for id, (f, ctrl) in refs.items():
