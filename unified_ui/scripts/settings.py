@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Any, Callable, Literal
+import os
 import flet as ft
 
 from . import tools
@@ -239,11 +240,32 @@ class Settings:
             return ctrl
 
         elif f.type == "directory":
-            ctrl = tools.entry(app, 14,
+            entry = tools.entry(app, 14,
                 label=f.label,
                 value=str(f.value) if f.value is not None else "",
-                hint_text="Enter folder path...",
-                prefix_icon=ft.Icons.FOLDER_OUTLINED)
+                hint_text="Enter folder path...")
+            entry.expand = True
+
+            async def pick_directory():
+                start = os.path.normpath(entry.value) if entry.value else None
+                path = await ft.FilePicker().get_directory_path(
+                    dialog_title=f.label,
+                    initial_directory=start if start and os.path.isdir(start) else None)
+                if path:
+                    entry.value = path
+                    entry.update()
+
+            refs[f.id] = (f, entry)
+            return ft.Row(
+                spacing=int(8 * s),
+                vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                controls=[
+                    entry,
+                    ft.IconButton(
+                        icon=ft.Icons.FOLDER_OPEN,
+                        icon_color=app.theme.secondary,
+                        disabled=app.page.web,
+                        on_click=lambda: app.page.run_task(pick_directory))])
 
         else:
             return None

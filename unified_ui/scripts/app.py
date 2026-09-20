@@ -48,7 +48,7 @@ class App:
 
     def run(self, title: str = ""):
         self.title = title
-        ft.app(target=self.build)
+        ft.run(self.build)
 
 
     async def build(self, page: ft.Page):
@@ -98,7 +98,7 @@ class App:
         self.apply_picker_themes() 
 
         if self.page.platform in MOBILE_PLATFORMS:
-            if not self._initialized:
+            if not self.initialized:
                 orientations = LANDSCAPE if self.orientation == "landscape" else PORTRAIT
                 await self.page.set_allowed_device_orientations(orientations)
 
@@ -362,19 +362,19 @@ class App:
 
     
     async def save(self, key: str, value: Any):
-        await self.page.shared_preferences.set(f"{self.title}.{key}", value)
+        await ft.SharedPreferences().set(f"{self.title}.{key}", value)
 
     async def load(self, key: str, default: Any = None) -> Any:
-        val = await self.page.shared_preferences.get(f"{self.title}.{key}")
+        val = await ft.SharedPreferences().get(f"{self.title}.{key}")
         return val if val is not None else default
 
     async def delete(self, key: str):
-        await self.page.shared_preferences.remove(f"{self.title}.{key}")
+        await ft.SharedPreferences().remove(f"{self.title}.{key}")
 
     async def delete_all(self):
         if self.allow_deleting:
             for key in self.saved_keys:
-                await self.page.shared_preferences.remove(f"{self.title}.{key}")
+                await ft.SharedPreferences().remove(f"{self.title}.{key}")
             await self.page.window.close()
 
 

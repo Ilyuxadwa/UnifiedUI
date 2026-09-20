@@ -65,7 +65,7 @@ def ui(app):
 
     
 def main(app):
-    print("hi!")
+    print("The continuation of the app is running...")
 
 
 
