@@ -32,7 +32,6 @@ class Logger:
 
     def clear(self):
         self.history.clear()
-        self.history.append("Logger cleared.")
 
     def copy(self):
         full = ""
