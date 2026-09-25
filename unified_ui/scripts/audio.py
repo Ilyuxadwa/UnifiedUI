@@ -12,7 +12,7 @@ class AudioController:
 
     def add_sound(self, name: str, src: str, volume: float | None = None, loop: bool = False):
         audio = fta.Audio(
-            src=src,
+            src="assets/sounds/" + src,
             autoplay=False,
             volume=volume if volume is not None else self.volume,
             release_mode=fta.ReleaseMode.LOOP if loop else fta.ReleaseMode.STOP,
