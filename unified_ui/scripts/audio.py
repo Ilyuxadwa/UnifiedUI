@@ -8,6 +8,8 @@ class AudioController:
         self.volume = volume
         self.muted = muted
         self.sounds: dict[str, fta.Audio] = {}
+        self.pending: set[str] = set()
+        self.ready_callback = None
 
 
     def add_sound(self, name: str, src: str, volume: float | None = None, loop: bool = False):
@@ -18,12 +20,26 @@ class AudioController:
             release_mode=fta.ReleaseMode.LOOP if loop else fta.ReleaseMode.STOP,
         )
         self.sounds[name] = audio
+        self.pending.add(name)
+
+        def on_loaded(e):
+            self.pending.discard(name)
+            if not self.pending and self.ready_callback:
+                self.ready_callback()
+
+        audio.on_loaded = on_loaded
 
         async def mount():
             self.page.services.append(audio)
             self.page.update()
 
         self.page.run_task(mount)
+
+
+    def on_ready(self, callback):
+        self.ready_callback = callback
+        if not self.pending:
+            callback()
 
 
     def set_volume(self, value: float):
