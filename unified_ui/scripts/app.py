@@ -440,6 +440,14 @@ class App:
             pages = [pages]
         self.top_bar_controls.append([icon, dialog_window, icon_color, tooltip, pages])
 
+    def add_devider(self):
+        s = utils.scale(self.size)
+        self.body.controls.append(ft.Container(
+                            height=3 * s,
+                            border_radius=999,
+                            bgcolor=self.theme.additional_color,
+                            margin=50 * s))
+
     def update(self):
         self.body.controls.clear()
         if self.ui_builder:
